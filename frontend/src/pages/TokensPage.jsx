@@ -745,36 +745,6 @@ export default function TokensPage() {
             ))}
           </div>
         </div>
-
-        {/* Correlation — Collapsible */}
-        <div className="mt-3">
-          <button
-            onClick={() => setShowCorrelation(!showCorrelation)}
-            className="w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition-colors"
-          >
-            <span className="text-sm font-semibold text-gray-700">OI & Volume Correlations</span>
-            {showCorrelation ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
-          </button>
-          
-          {showCorrelation && (
-            <div className="mt-2 p-4 bg-white border border-gray-200 rounded-xl">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-3 bg-gray-50 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">OI/Netflow</div>
-                  <div className="text-lg font-bold text-gray-900">0.87</div>
-                </div>
-                <div className="p-3 bg-gray-50 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">OI/Price</div>
-                  <div className="text-lg font-bold text-gray-900">0.64</div>
-                </div>
-                <div className="p-3 bg-gray-50 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">Volume/Price</div>
-                  <div className="text-lg font-bold text-gray-900">0.72</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Recent Change Modal */}
