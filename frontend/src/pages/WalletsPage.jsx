@@ -178,46 +178,95 @@ export default function WalletsPage() {
         <Header />
         
         <div className="px-4 py-6">
-          {/* Wallet Intelligence Summary - UPDATED WITH VERDICT */}
+          {/* Wallet Intelligence Summary - WITH DECISION SCORE */}
           <div className="bg-gray-900 text-white rounded-2xl p-5 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Wallet Intelligence</div>
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-3xl font-bold">FOLLOW</span>
+                  <span className="text-3xl font-bold">{walletIntelligence.verdict}</span>
                   <span className="px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-lg text-sm font-semibold text-green-400">
                     High Confidence
                   </span>
                 </div>
-                <div className="text-xs text-gray-400">
-                  Confidence: {walletIntelligence.confidence}% • Classification: {walletIntelligence.classification}
+                <div className="text-xs text-gray-400 flex items-center gap-2">
+                  Decision Score: <span className="font-bold text-white">{walletIntelligence.decisionScore}/100</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="p-0.5 hover:bg-white/10 rounded">
+                        <Info className="w-3 h-3 text-gray-400" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+                      <p className="font-semibold mb-2">Decision Score Formula:</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• 35% Reliability ({walletIntelligence.reliabilityScore})</li>
+                        <li>• 25% Low Risk ({100 - walletIntelligence.riskScore})</li>
+                        <li>• 25% PnL Consistency ({walletIntelligence.pnlConsistency})</li>
+                        <li>• 15% Market Alignment ({walletIntelligence.marketAlignmentScore})</li>
+                      </ul>
+                    </TooltipContent>
+                  </Tooltip>
+                  • {walletIntelligence.classification}
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-xs text-gray-400 mb-1">Reliability Score</div>
-                <div className="text-3xl font-bold">{walletIntelligence.reliabilityScore}<span className="text-xl text-gray-500">/100</span></div>
+                <div className="text-xs text-gray-400 mb-1">Confidence</div>
+                <div className="text-3xl font-bold">{walletIntelligence.confidence}<span className="text-xl text-gray-500">%</span></div>
+                <div className="text-xs text-gray-400 mt-1">{followingImpact.tradesAnalyzed} trades</div>
               </div>
             </div>
 
-            {/* Why? */}
+            {/* Why Follow? */}
             <div className="mb-4 p-4 bg-white/5 rounded-lg border border-white/10">
               <div className="text-xs text-gray-400 mb-2 uppercase tracking-wider">Why Follow This Wallet?</div>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
                   <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  <span>Profitable over 6 months (+$549K)</span>
+                  <span>Profitable over 6 months (+$549K realized)</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  <span>Low systemic risk (12/100)</span>
+                  <span>Low systemic risk ({walletIntelligence.riskScore}/100)</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  <span>Aligned with current market regime (Risk-On)</span>
+                  <span>Aligned with current market regime ({walletIntelligence.marketAlignment})</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-300">High frequency trader — short holding periods</span>
+                  <span className="text-gray-300">High frequency trader — short holding periods ({followingImpact.avgEntryDelay} avg delay)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* What happens if you follow - NEW BLOCK */}
+            <div className="mb-4 p-4 bg-white/10 rounded-lg border border-white/20">
+              <div className="text-xs text-gray-400 mb-3 uppercase tracking-wider flex items-center gap-2">
+                What Happens If You Follow
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="p-0.5 hover:bg-white/10 rounded">
+                      <Info className="w-3 h-3 text-gray-400" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+                    <p>Estimated impact based on historical behavior over {followingImpact.confidencePeriod}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <div className="grid grid-cols-3 gap-3 text-xs">
+                <div>
+                  <div className="text-gray-400 mb-1">Avg Drawdown</div>
+                  <div className="text-base font-bold text-white">{followingImpact.avgDrawdown}</div>
+                </div>
+                <div>
+                  <div className="text-gray-400 mb-1">Entry Delay</div>
+                  <div className="text-base font-bold text-white">{followingImpact.avgEntryDelay}</div>
+                </div>
+                <div>
+                  <div className="text-gray-400 mb-1">Expected Slippage</div>
+                  <div className="text-base font-bold text-white">{followingImpact.expectedSlippage}</div>
                 </div>
               </div>
             </div>
