@@ -960,5 +960,6 @@ export default function TokensPage() {
         </div>
       )}
     </div>
+    </TooltipProvider>
   );
 }
