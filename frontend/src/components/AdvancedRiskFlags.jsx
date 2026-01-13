@@ -14,7 +14,7 @@ export default function AdvancedRiskFlags() {
   const overallRisk = {
     score: 23,
     level: 'Low',
-    color: 'emerald',
+    color: 'green', // зеленый для низкого риска
   };
 
   // Risk categories
@@ -23,7 +23,7 @@ export default function AdvancedRiskFlags() {
       category: 'Sanctions Risk',
       score: 0,
       level: 'None',
-      color: '#34C759',
+      color: '#10B981', // зеленый
       description: 'No exposure to sanctioned addresses',
       icon: Shield,
       checks: [
@@ -36,7 +36,7 @@ export default function AdvancedRiskFlags() {
       category: 'Mixer Usage',
       score: 5,
       level: 'Very Low',
-      color: '#34C759',
+      color: '#10B981', // зеленый
       description: 'Minimal interaction with mixing services',
       icon: AlertTriangle,
       checks: [
@@ -48,7 +48,7 @@ export default function AdvancedRiskFlags() {
       category: 'Rug Pull History',
       score: 12,
       level: 'Low',
-      color: '#FF9500',
+      color: '#6B7280', // серый
       description: '2 tokens with suspicious activity',
       icon: AlertTriangle,
       checks: [
@@ -60,7 +60,7 @@ export default function AdvancedRiskFlags() {
       category: 'Risky Approvals',
       score: 35,
       level: 'Medium',
-      color: '#FF9500',
+      color: '#6B7280', // серый
       description: '8 unlimited approvals to contracts',
       icon: AlertTriangle,
       checks: [
@@ -73,7 +73,7 @@ export default function AdvancedRiskFlags() {
       category: 'Smart Contract Risk',
       score: 8,
       level: 'Very Low',
-      color: '#34C759',
+      color: '#10B981', // зеленый
       description: 'Low exposure to risky contracts',
       icon: Shield,
       checks: [
