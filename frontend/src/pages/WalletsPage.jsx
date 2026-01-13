@@ -25,12 +25,107 @@ const GlassCard = ({ children, className = "", hover = false }) => (
 
 // Mock wallets data
 const topWallets = [
-  { address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', label: 'Vitalik Buterin', type: 'Smart Money', balance: '$45.2M', pnl: '+27.4%', riskScore: 12 },
-  { address: '0x28C6c06298d514Db089934071355E5743bf21d60', label: 'Binance Hot Wallet', type: 'Exchange', balance: '$2.8B', pnl: '+31.8%', riskScore: 5 },
-  { address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb', label: 'Unknown Whale', type: 'Whale', balance: '$127.5M', pnl: '-6.4%', riskScore: 45 },
-  { address: '0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503', label: 'a16z Crypto', type: 'Fund', balance: '$890.2M', pnl: '+26.3%', riskScore: 8 },
-  { address: '0x1234567890abcdef1234567890abcdef12345678', label: 'DeFi Farmer', type: 'Smart Money', balance: '$8.9M', pnl: '+23.6%', riskScore: 22 },
-  { address: '0xabcdef1234567890abcdef1234567890abcdef12', label: 'NFT Trader', type: 'Trader', balance: '$1.2M', pnl: '-15.0%', riskScore: 67 },
+  { 
+    address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', 
+    label: 'Vitalik Buterin', 
+    type: 'Smart Money', 
+    balance: '$45.2M', 
+    pnl: '+27.4%', 
+    riskScore: 12,
+    whyFeatured: 'Accumulating L2 tokens during bullish regime'
+  },
+  { 
+    address: '0x28C6c06298d514Db089934071355E5743bf21d60', 
+    label: 'Binance Hot Wallet', 
+    type: 'Exchange', 
+    balance: '$2.8B', 
+    pnl: '+31.8%', 
+    riskScore: 5,
+    whyFeatured: 'High volume institutional accumulation'
+  },
+  { 
+    address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb', 
+    label: 'Unknown Whale', 
+    type: 'Whale', 
+    balance: '$127.5M', 
+    pnl: '-6.4%', 
+    riskScore: 45,
+    whyFeatured: 'Early buyer of AI narrative tokens'
+  },
+  { 
+    address: '0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503', 
+    label: 'a16z Crypto', 
+    type: 'Fund', 
+    balance: '$890.2M', 
+    pnl: '+26.3%', 
+    riskScore: 8,
+    whyFeatured: 'Strategic positions in infrastructure plays'
+  },
+  { 
+    address: '0x1234567890abcdef1234567890abcdef12345678', 
+    label: 'DeFi Farmer', 
+    type: 'Smart Money', 
+    balance: '$8.9M', 
+    pnl: '+23.6%', 
+    riskScore: 22,
+    whyFeatured: 'Profitable yield farming strategies'
+  },
+  { 
+    address: '0xabcdef1234567890abcdef1234567890abcdef12', 
+    label: 'NFT Trader', 
+    type: 'Trader', 
+    balance: '$1.2M', 
+    pnl: '-15.0%', 
+    riskScore: 67,
+    whyFeatured: 'High-frequency NFT trading activity'
+  },
+];
+
+// Wallet Intelligence data
+const walletIntelligence = {
+  classification: 'Smart Money',
+  confidence: 87,
+  currentMode: 'Accumulation',
+  marketAlignment: 'Risk-On',
+  tokenOverlap: ['ETH', 'AI', 'L2'],
+  reliabilityScore: 82
+};
+
+// Wallet Alerts configuration
+const walletAlertTypes = [
+  {
+    id: 'behavioral_shift',
+    name: 'Behavioral Shift',
+    description: 'Alert when wallet changes trading pattern',
+    triggers: [
+      'Switched from accumulation to distribution',
+      'Changed from holder to active trader',
+      'Shift in primary DEX usage'
+    ],
+    icon: Activity
+  },
+  {
+    id: 'narrative_entry',
+    name: 'Narrative Entry',
+    description: 'Alert when wallet enters new narrative cluster',
+    triggers: [
+      'First purchase in new narrative (AI, Gaming, L2)',
+      'Large allocation to emerging sector',
+      'Following Smart Money into new category'
+    ],
+    icon: Target
+  },
+  {
+    id: 'risk_threshold',
+    name: 'Risk Threshold',
+    description: 'Alert on portfolio risk changes',
+    triggers: [
+      'PnL drawdown exceeds 10%',
+      'Risk score increases above 50',
+      'Interaction with high-risk tokens'
+    ],
+    icon: AlertTriangle
+  }
 ];
 
 const typeBadgeColors = {
