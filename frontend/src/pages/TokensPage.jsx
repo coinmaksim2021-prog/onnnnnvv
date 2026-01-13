@@ -300,37 +300,52 @@ export default function TokensPage() {
           {/* LEFT COLUMN (60%) */}
           <div className="w-[60%] space-y-3">
             
-            {/* Net Flow vs Price Chart */}
+            {/* Flow → Price Confirmation Panel */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                   <Activity className="w-4 h-4 text-gray-500" />
-                  Net Flow vs Price (7D)
+                  Flow → Price Confirmation
+                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded" title="Shows whether on-chain capital movement supports price action">
+                    <Info className="w-3.5 h-3.5 text-gray-400" />
+                  </button>
                 </h3>
-                <div className="text-xs text-gray-500">Correlation: 0.87</div>
+                <div className="text-xs text-gray-500">7D</div>
               </div>
-              {/* Explanation line */}
-              <p className="text-xs text-gray-500 mb-3">
-                Shows whether on-chain capital movement supports price action.
-              </p>
               
-              <div className="h-28">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
-                    <XAxis dataKey="day" tick={{ fontSize: 10 }} stroke="#9CA3AF" />
-                    <YAxis yAxisId="left" hide />
-                    <YAxis yAxisId="right" orientation="right" hide />
-                    <Tooltip 
-                      contentStyle={{ background: '#1F2937', border: 'none', borderRadius: '8px', fontSize: '12px', color: 'white' }}
-                    />
-                    <Line yAxisId="left" type="monotone" dataKey="price" stroke="#374151" strokeWidth={2} dot={false} />
-                    <Line yAxisId="right" type="monotone" dataKey="netflow" stroke="#9CA3AF" strokeWidth={2} dot={false} strokeDasharray="4 4" />
-                  </LineChart>
-                </ResponsiveContainer>
+              {/* Confirmation States */}
+              <div className="space-y-2 mb-3">
+                <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
+                  <Check className="w-4 h-4 text-gray-700" />
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-900">Accumulation Confirmed</div>
+                    <div className="text-xs text-gray-500">Net Flow ↑ + Price ↑</div>
+                  </div>
+                  <div className="text-xs font-semibold text-gray-700 px-2 py-1 bg-white rounded">Active</div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-2 rounded-lg opacity-40">
+                  <AlertTriangle className="w-4 h-4 text-gray-400" />
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-500">Absorption</div>
+                    <div className="text-xs text-gray-400">Net Flow ↑ + Price ↓</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-2 rounded-lg opacity-40">
+                  <AlertTriangle className="w-4 h-4 text-gray-400" />
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-gray-500">Distribution Risk</div>
+                    <div className="text-xs text-gray-400">Net Flow ↓ + Price ↑</div>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-4 mt-2 text-xs text-gray-500">
-                <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-gray-700"></span> Price</span>
-                <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-gray-400"></span> Net Flow</span>
+              
+              {/* Interpretation */}
+              <div className="pt-2 border-t border-gray-100">
+                <div className="text-xs text-gray-600">
+                  <span className="font-semibold">Flow supports price:</span> Capital inflow aligned with price increase — healthy accumulation pattern over past week.
+                </div>
               </div>
             </div>
             
