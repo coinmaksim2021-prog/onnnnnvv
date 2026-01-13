@@ -231,7 +231,6 @@ const strategyLogic = {
 export default function TokensPage() {
   const [selectedToken, setSelectedToken] = useState('eth');
   const [searchQuery, setSearchQuery] = useState('');
-  const [showCorrelation, setShowCorrelation] = useState(false);
   const [selectedChange, setSelectedChange] = useState(null);
   const [selectedTrade, setSelectedTrade] = useState(null);
   const [showAlertModal, setShowAlertModal] = useState(false);
