@@ -184,6 +184,19 @@ export default function WalletsPage() {
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [showAdvancedDetails, setShowAdvancedDetails] = useState(false);
   const [showRiskDeepDive, setShowRiskDeepDive] = useState(false);
+  const [trackedWallets, setTrackedWallets] = useState([]);
+  const [showSignalsModal, setShowSignalsModal] = useState(false);
+
+  // Track wallet handler
+  const handleTrackWallet = (address) => {
+    if (trackedWallets.includes(address)) {
+      setTrackedWallets(trackedWallets.filter(w => w !== address));
+    } else {
+      setTrackedWallets([...trackedWallets, address]);
+    }
+  };
+
+  const isWalletTracked = trackedWallets.includes(selectedWallet);
 
   const filteredWallets = topWallets.filter(wallet => {
     const matchesSearch = wallet.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
