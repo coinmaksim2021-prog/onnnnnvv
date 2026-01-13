@@ -286,6 +286,119 @@ const EntityIntelligence = ({ entity, intelligence, onTrack, onAlert, isTracked 
   );
 };
 
+// NEW: Entity Action Panel - "What should I do?"
+const EntityActionPanel = ({ actionBias, entityName }) => {
+  return (
+    <GlassCard className="p-5 mb-6 border-2 border-gray-900">
+      <div className="flex items-center gap-2 mb-4">
+        <Zap className="w-5 h-5 text-gray-900" />
+        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">What Should I Do?</h3>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button className="p-0.5 hover:bg-gray-100 rounded">
+              <Info className="w-3.5 h-3.5 text-gray-400" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">Decision support based on entity flow, historical impact, and market regime. Not financial advice.</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+
+      {/* Primary Action */}
+      <div className="p-4 bg-gray-900 text-white rounded-xl mb-4">
+        <div className="text-xs text-gray-400 mb-1">ACTION BIAS</div>
+        <div className="text-xl font-bold">{actionBias.primary}</div>
+        <div className="text-xs text-gray-400 mt-1">Optimal timing: {actionBias.timing}</div>
+      </div>
+
+      {/* Action Items */}
+      <div className="space-y-2 mb-4">
+        {actionBias.actions.map((action, i) => (
+          <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+            {action.type === 'positive' && <TrendingUp className="w-4 h-4 text-gray-900 mt-0.5 flex-shrink-0" />}
+            {action.type === 'negative' && <TrendingDown className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />}
+            {action.type === 'neutral' && <Clock className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />}
+            <span className="text-sm text-gray-700">{action.text}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Risk Note */}
+      <div className="p-3 border border-gray-200 rounded-lg">
+        <div className="flex items-start gap-2">
+          <AlertTriangle className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+          <p className="text-xs text-gray-500">{actionBias.riskNote}</p>
+        </div>
+      </div>
+    </GlassCard>
+  );
+};
+
+// NEW: Cross-Entity Context - "Other entities behaving similarly"
+const CrossEntityContext = ({ alignedEntities, confidenceBoost, currentEntity }) => {
+  const isPositiveBoost = confidenceBoost > 0;
+  
+  return (
+    <GlassCard className="p-5 mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Users className="w-5 h-5 text-gray-700" />
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Cross-Entity Context</h3>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="p-0.5 hover:bg-gray-100 rounded">
+                <Info className="w-3.5 h-3.5 text-gray-400" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+              <p className="text-xs">Shows other entities with aligned behavior. Multiple entities acting together strengthens the signal.</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        <div className={`px-3 py-1 rounded-lg text-sm font-bold ${isPositiveBoost ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'}`}>
+          Confidence {isPositiveBoost ? '+' : ''}{confidenceBoost}%
+        </div>
+      </div>
+
+      {alignedEntities.length > 0 ? (
+        <>
+          <div className="text-xs text-gray-500 mb-3">Entities behaving similarly to {currentEntity}:</div>
+          <div className="space-y-2">
+            {alignedEntities.map((entity, i) => (
+              <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <Building className="w-4 h-4 text-gray-600" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-900 text-sm">{entity.name}</div>
+                    <div className="text-xs text-gray-500">{entity.action} • {entity.token}</div>
+                  </div>
+                </div>
+                <div className="text-sm font-semibold text-gray-700">{entity.confidence}%</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 p-3 bg-gray-900 text-white rounded-lg">
+            <div className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-medium">
+                {alignedEntities.length + 1} entities aligned → Signal strength increased
+              </span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="p-4 bg-gray-50 rounded-lg text-center">
+          <div className="text-gray-500 text-sm">No aligned entities detected</div>
+          <div className="text-xs text-gray-400 mt-1">This entity is acting independently</div>
+        </div>
+      )}
+    </GlassCard>
+  );
+};
+
 // NEW: Token Impact Matrix Component
 const TokenImpactMatrix = ({ tokenImpact, entityName }) => {
   const getDirectionIcon = (direction) => {
