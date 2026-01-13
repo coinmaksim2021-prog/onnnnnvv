@@ -132,7 +132,7 @@ export default function AdvancedRiskFlags() {
                 {overallRisk.score}/100
               </div>
               <div>
-                <div className={`badge ${overallRisk.score <= 20 ? 'badge-green' : overallRisk.score <= 50 ? 'badge-orange' : 'badge-red'}`}>
+                <div className={`badge ${overallRisk.score <= 20 ? 'bg-green-100 text-green-700' : overallRisk.score <= 50 ? 'bg-gray-100 text-gray-700' : 'bg-gray-200 text-gray-900'}`}>
                   {overallRisk.level} Risk
                 </div>
               </div>
@@ -144,10 +144,10 @@ export default function AdvancedRiskFlags() {
               style={{ 
                 width: `${overallRisk.score}%`,
                 background: overallRisk.score <= 20 
-                  ? 'linear-gradient(90deg, #34C759, #30D158)' 
+                  ? '#10B981' // зеленый
                   : overallRisk.score <= 50
-                  ? 'linear-gradient(90deg, #FF9500, #FFAA33)'
-                  : 'linear-gradient(90deg, #FF3B30, #FF6B64)'
+                  ? '#6B7280' // серый
+                  : '#374151' // темно-серый
               }}
             />
           </div>
