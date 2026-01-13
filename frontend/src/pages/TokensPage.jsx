@@ -466,23 +466,56 @@ export default function TokensPage() {
               </div>
             </div>
             
-            {/* Buy / Sell Pressure */}
+            {/* Market Pressure by Cohort */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-2">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
                 <BarChart3 className="w-4 h-4 text-gray-500" />
-                Buy / Sell Pressure
+                Market Pressure by Cohort
+                <button className="ml-1 p-0.5 hover:bg-gray-100 rounded" title="Who is buying vs selling">
+                  <Info className="w-3.5 h-3.5 text-gray-400" />
+                </button>
               </h3>
               
-              <div className="flex items-center justify-between mb-2">
-                <div className="text-2xl font-bold text-gray-900">{token.pressure.buyPct}%</div>
-                <div className="text-sm text-gray-500">Net: +{token.pressure.netFlow}</div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-500 w-16">Retail</span>
+                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-gray-300 rounded-full" style={{ width: '25%' }}></div>
+                  </div>
+                  <span className="font-semibold text-gray-500 w-8 text-right">Sell</span>
+                </div>
+                
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-500 w-16">Pro</span>
+                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-gray-700 rounded-full" style={{ width: '75%' }}></div>
+                  </div>
+                  <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
+                </div>
+                
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-500 w-16">Inst.</span>
+                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-gray-800 rounded-full" style={{ width: '85%' }}></div>
+                  </div>
+                  <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
+                </div>
+                
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-500 w-16">Whale</span>
+                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-gray-900 rounded-full" style={{ width: '90%' }}></div>
+                  </div>
+                  <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
+                </div>
               </div>
               
-              <div className="h-2 bg-gray-200 rounded-full overflow-hidden flex mb-2">
-                <div className="h-full bg-gray-700 rounded-l-full" style={{ width: `${token.pressure.buyPct}%` }} />
+              {/* Interpretation */}
+              <div className="pt-3 border-t border-gray-100 mt-3">
+                <div className="text-xs text-gray-600">
+                  <span className="font-semibold">Dominant cohort:</span> Institutional & Whale buying while Retail reduces exposure — confirms strong structure.
+                </div>
               </div>
-              
-              <div className="text-xs text-gray-600">{token.pressure.interpretation}</div>
             </div>
 
             {/* Trade Size Breakdown — ENHANCED CLICK */}
