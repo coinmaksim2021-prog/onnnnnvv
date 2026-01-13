@@ -1107,7 +1107,21 @@ export default function EntityDetail() {
           />
         </div>
 
-        {/* NEW: Token Impact Matrix */}
+        {/* NEW: Action Panel - What should I do? */}
+        <div className="px-4">
+          <EntityActionPanel actionBias={intelligence.actionBias} entityName={entity.name} />
+        </div>
+
+        {/* NEW: Cross-Entity Context */}
+        <div className="px-4">
+          <CrossEntityContext 
+            alignedEntities={intelligence.alignedEntities} 
+            confidenceBoost={intelligence.confidenceBoost}
+            currentEntity={entity.name}
+          />
+        </div>
+
+        {/* Token Impact Matrix */}
         <div className="px-4">
           <TokenImpactMatrix tokenImpact={intelligence.tokenImpact} entityName={entity.name} />
         </div>
