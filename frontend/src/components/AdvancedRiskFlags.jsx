@@ -91,15 +91,15 @@ export default function AdvancedRiskFlags() {
   ];
 
   const getScoreColor = (score) => {
-    if (score <= 20) return 'text-emerald-600';
-    if (score <= 50) return 'text-orange-600';
-    return 'text-red-600';
+    if (score <= 20) return 'text-green-600';
+    if (score <= 50) return 'text-gray-700';
+    return 'text-gray-900';
   };
 
   const getAlertIcon = (type) => {
-    if (type === 'warning') return <AlertTriangle className="w-4 h-4 text-orange-500" />;
-    if (type === 'info') return <Shield className="w-4 h-4 text-blue-500" />;
-    return <CheckCircle className="w-4 h-4 text-emerald-500" />;
+    if (type === 'warning') return <AlertTriangle className="w-4 h-4 text-gray-600" />;
+    if (type === 'info') return <Shield className="w-4 h-4 text-gray-600" />;
+    return <CheckCircle className="w-4 h-4 text-green-600" />;
   };
 
   return (
