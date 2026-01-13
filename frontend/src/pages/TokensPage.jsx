@@ -249,8 +249,9 @@ export default function TokensPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
+    <TooltipProvider>
+      <div className="min-h-screen bg-white">
+        <Header />
       
       {/* Token Selector */}
       <div className="border-b border-gray-100 bg-gray-50/50">
