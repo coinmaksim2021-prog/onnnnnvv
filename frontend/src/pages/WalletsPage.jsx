@@ -447,56 +447,101 @@ export default function WalletsPage() {
         {/* Row 2: Behavior Fingerprint + Advanced Risk Flags */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           <div>
-            <div className="flex items-center gap-2 mb-3 px-1">
-              <h3 className="text-section-title">
-                Behavior Fingerprint
-              </h3>
-              <InfoIcon 
-                title="Behavior Fingerprint"
-                description="Machine learning-based wallet classification: analyzes trading patterns, DEX activity, DeFi farming, NFT trading, and holding behavior to identify wallet type and strategy."
-                data={[
-                  { label: 'Wallet Type', value: 'Smart Money Trader', color: 'purple' },
-                  { label: 'Confidence', value: '87%', color: 'emerald' },
-                  { label: 'Primary Activity', value: 'DEX Trading', color: 'blue' },
-                  { label: 'Similar Wallets', value: '234 found', color: 'white' }
-                ]}
-                signal={{ 
-                  type: 'strong', 
-                  text: 'High confidence classification - consistent patterns detected',
-                  emoji: '🎯'
-                }}
-                position="bottom"
-              />
-            </div>
+            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+              <Target className="w-4 h-4 text-gray-500" />
+              Behavior Fingerprint
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                    <Info className="w-3.5 h-3.5 text-gray-400" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                  <p>ML-based wallet classification analyzing trading patterns, DEX activity, DeFi farming, and holding behavior.</p>
+                  <p className="text-xs mt-2 text-gray-400">Classification confidence: 87% based on 468 trades</p>
+                </TooltipContent>
+              </Tooltip>
+            </h3>
             <BehaviorFingerprint address={selectedWallet} />
           </div>
 
           <div>
-            <div className="flex items-center gap-2 mb-3 px-1">
-              <h3 className="text-section-title">
-                Advanced Risk Flags
-              </h3>
-              <InfoIcon 
-                title="Advanced Risk Flags"
-                description="Comprehensive risk assessment: sanctions exposure, mixer interactions, contract vulnerabilities, rug pull history, and dangerous token approvals. Score ranges 0-100 (higher = riskier)."
-                data={[
-                  { label: 'Risk Score', value: '23/100', color: 'emerald' },
-                  { label: 'Sanctions', value: 'None', color: 'emerald' },
-                  { label: 'Mixer Usage', value: 'No', color: 'emerald' },
-                  { label: 'Risky Approvals', value: '2 found', color: 'orange' }
-                ]}
-                signal={{ 
-                  type: 'weak', 
-                  text: 'Low risk profile - minor approvals to review',
-                  emoji: '✅'
-                }}
-                position="bottom"
-              />
-            </div>
+            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+              <Shield className="w-4 h-4 text-gray-500" />
+              Advanced Risk Flags
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                    <Info className="w-3.5 h-3.5 text-gray-400" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                  <p>Comprehensive risk assessment including sanctions, mixer interactions, and dangerous approvals.</p>
+                  <p className="text-xs mt-2 font-semibold text-green-400">Overall wallet risk: Acceptable for tracking & mirroring</p>
+                </TooltipContent>
+              </Tooltip>
+            </h3>
             <AdvancedRiskFlags address={selectedWallet} />
           </div>
         </div>
       </div>
+        </div>
+
+        {/* Wallet Alert Modal */}
+        {showAlertModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowAlertModal(false)}>
+            <div className="bg-white rounded-2xl p-6 max-w-lg w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Bell className="w-5 h-5 text-gray-700" />
+                  <h3 className="text-lg font-bold text-gray-900">Create Wallet Alert</h3>
+                </div>
+                <button onClick={() => setShowAlertModal(false)} className="p-1 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              
+              <p className="text-sm text-gray-600 mb-4">
+                Monitor behavioral changes and risk events for this wallet
+              </p>
+              
+              <div className="space-y-3">
+                {walletAlertTypes.map((alert) => {
+                  const Icon = alert.icon;
+                  return (
+                    <div key={alert.id} className="p-4 border border-gray-200 rounded-xl hover:border-gray-900 transition-colors cursor-pointer group">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-gray-900 transition-colors">
+                          <Icon className="w-5 h-5 text-gray-600 group-hover:text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900 mb-1">{alert.name}</h4>
+                          <p className="text-xs text-gray-600 mb-2">{alert.description}</p>
+                          <div className="text-xs text-gray-500">
+                            <div className="font-medium mb-1">Triggers when:</div>
+                            <ul className="space-y-0.5">
+                              {alert.triggers.map((trigger, i) => (
+                                <li key={i} className="flex items-start gap-1.5">
+                                  <span className="text-gray-400">•</span>
+                                  <span>{trigger}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              
+              <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500">
+                <span className="font-medium">Note:</span> Wallet alerts are behavioral, structural, and risk-based — different from Market alerts.
+              </div>
+            </div>
+          </div>
+        )}
+      </TooltipProvider>
     </div>
   );
 }
