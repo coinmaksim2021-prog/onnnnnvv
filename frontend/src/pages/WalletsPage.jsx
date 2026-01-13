@@ -749,6 +749,118 @@ export default function WalletsPage() {
             </div>
           </div>
         )}
+
+        {/* Copy Signals Modal */}
+        {showSignalsModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowSignalsModal(false)}>
+            <div className="bg-white rounded-2xl p-6 max-w-2xl w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-gray-700" />
+                  <h3 className="text-lg font-bold text-gray-900">Copy Signals</h3>
+                  <span className="px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-600">Read-only</span>
+                </div>
+                <button onClick={() => setShowSignalsModal(false)} className="p-1 hover:bg-gray-100 rounded-lg">
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+              
+              <p className="text-sm text-gray-600 mb-4">
+                Theoretical entry points based on wallet's recent actions. These are historical signals — not recommendations.
+              </p>
+
+              {/* Recent Signals */}
+              <div className="space-y-3 mb-4">
+                <div className="p-4 border border-gray-200 rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+                        <TrendingUp className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">ARB Entry</div>
+                        <div className="text-xs text-gray-500">2 hours ago</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-gray-900">$1.42</div>
+                      <div className="text-xs text-green-600">+4.2% since</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs text-gray-600">
+                    <span>Size: $45,000</span>
+                    <span>•</span>
+                    <span>DEX: Uniswap</span>
+                    <span>•</span>
+                    <span>Slippage: 0.12%</span>
+                  </div>
+                </div>
+
+                <div className="p-4 border border-gray-200 rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+                        <TrendingUp className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">OP Accumulation</div>
+                        <div className="text-xs text-gray-500">6 hours ago</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-gray-900">$2.18</div>
+                      <div className="text-xs text-green-600">+1.8% since</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs text-gray-600">
+                    <span>Size: $120,000</span>
+                    <span>•</span>
+                    <span>DEX: 1inch</span>
+                    <span>•</span>
+                    <span>Slippage: 0.08%</span>
+                  </div>
+                </div>
+
+                <div className="p-4 border border-gray-200 rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-gray-500 rounded-lg flex items-center justify-center">
+                        <TrendingDown className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">PEPE Exit</div>
+                        <div className="text-xs text-gray-500">1 day ago</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-gray-900">$0.0000089</div>
+                      <div className="text-xs text-gray-500">-2.1% since</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs text-gray-600">
+                    <span>Size: $28,000</span>
+                    <span>•</span>
+                    <span>DEX: Uniswap</span>
+                    <span>•</span>
+                    <span>Slippage: 0.34%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Disclaimer */}
+              <div className="p-3 bg-gray-50 rounded-xl">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                  <div className="text-xs text-gray-600">
+                    <span className="font-semibold">Important:</span> These signals show what the wallet did, not what you should do. 
+                    Actual execution will have different timing, slippage, and market conditions. 
+                    Average delay to copy: <span className="font-semibold">{followingImpact.avgEntryDelay}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );
