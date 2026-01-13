@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Building, TrendingUp, TrendingDown, ArrowUpRight, Users, Info } from 'lucide-react';
+import { Search, Building, TrendingUp, TrendingDown, ArrowUpRight, Users, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import Header from '../components/Header';
 import { PageHeader } from '../components/PageHeader';
 import {
@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "../components/ui/tooltip";
 
-// Mock entities data
+// Mock entities data - expanded for pagination demo
 const entitiesData = [
   // Exchanges
   { id: 'binance', name: 'Binance', type: 'Exchange', logo: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/270.png', holdings: '$28.4B', netflow24h: '+$125M', marketShare: 14.2, addresses: 1247, activity: 'accumulating', confidence: 82 },
@@ -29,6 +29,18 @@ const entitiesData = [
   
   // Market Makers
   { id: 'wintermute', name: 'Wintermute', type: 'Market Maker', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png', holdings: '$890M', netflow24h: '+$34M', marketShare: 0.4, addresses: 89, activity: 'rotating', confidence: 65 },
+  
+  // Additional entities for pagination
+  { id: 'ftx', name: 'FTX Estate', type: 'Exchange', logo: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/524.png', holdings: '$3.2B', netflow24h: '-$89M', marketShare: 1.6, addresses: 234, activity: 'distributing', confidence: 45 },
+  { id: 'polychain', name: 'Polychain Capital', type: 'Smart Money', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png', holdings: '$2.1B', netflow24h: '+$34M', marketShare: 1.0, addresses: 167, activity: 'accumulating', confidence: 79 },
+  { id: 'multicoin', name: 'Multicoin Capital', type: 'Smart Money', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png', holdings: '$1.5B', netflow24h: '+$23M', marketShare: 0.7, addresses: 98, activity: 'accumulating', confidence: 74 },
+  { id: 'alameda', name: 'Alameda Research', type: 'Smart Money', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png', holdings: '$890M', netflow24h: '-$156M', marketShare: 0.4, addresses: 456, activity: 'distributing', confidence: 32 },
+  { id: 'genesis', name: 'Genesis Trading', type: 'Market Maker', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png', holdings: '$2.3B', netflow24h: '+$45M', marketShare: 1.1, addresses: 78, activity: 'rotating', confidence: 61 },
+  { id: 'bitfinex', name: 'Bitfinex', type: 'Exchange', logo: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/37.png', holdings: '$5.6B', netflow24h: '+$67M', marketShare: 2.8, addresses: 345, activity: 'accumulating', confidence: 71 },
+  { id: 'okx', name: 'OKX', type: 'Exchange', logo: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/294.png', holdings: '$9.8B', netflow24h: '+$89M', marketShare: 4.9, addresses: 567, activity: 'accumulating', confidence: 77 },
+  { id: 'bybit', name: 'Bybit', type: 'Exchange', logo: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/521.png', holdings: '$4.2B', netflow24h: '+$34M', marketShare: 2.1, addresses: 289, activity: 'holding', confidence: 69 },
+  { id: 'kucoin', name: 'KuCoin', type: 'Exchange', logo: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/311.png', holdings: '$2.8B', netflow24h: '-$12M', marketShare: 1.4, addresses: 234, activity: 'rotating', confidence: 64 },
+  { id: 'deribit', name: 'Deribit', type: 'Exchange', logo: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/281.png', holdings: '$1.9B', netflow24h: '+$18M', marketShare: 0.9, addresses: 156, activity: 'accumulating', confidence: 72 },
 ];
 
 const activityConfig = {
@@ -38,15 +50,143 @@ const activityConfig = {
   'holding': { label: 'Holding', color: 'bg-gray-100 text-gray-600' },
 };
 
+const ITEMS_PER_PAGE = 9;
+
+// Pagination Component
+const Pagination = ({ currentPage, totalPages, totalItems, itemsPerPage, onPageChange }) => {
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages = [];
+    
+    if (totalPages <= 7) {
+      // Show all pages if 7 or less
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+      
+      if (currentPage > 3) {
+        pages.push('...');
+      }
+      
+      // Show pages around current
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+        if (!pages.includes(i)) {
+          pages.push(i);
+        }
+      }
+      
+      if (currentPage < totalPages - 2) {
+        pages.push('...');
+      }
+      
+      // Always show last page
+      if (!pages.includes(totalPages)) {
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
+
+  return (
+    <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+      {/* Pagination Controls */}
+      <div className="flex items-center gap-1">
+        {/* Previous Button */}
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${
+            currentPage === 1 
+              ? 'text-gray-300 cursor-not-allowed' 
+              : 'text-teal-500 hover:bg-teal-50'
+          }`}
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+
+        {/* Page Numbers */}
+        {pageNumbers.map((page, index) => (
+          page === '...' ? (
+            <span key={`ellipsis-${index}`} className="w-8 h-8 flex items-center justify-center text-teal-400 text-sm">
+              ...
+            </span>
+          ) : (
+            <button
+              key={page}
+              onClick={() => onPageChange(page)}
+              className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-semibold transition-colors ${
+                currentPage === page
+                  ? 'bg-teal-500 text-white'
+                  : 'text-teal-500 hover:bg-teal-50'
+              }`}
+            >
+              {page}
+            </button>
+          )
+        ))}
+
+        {/* Next Button */}
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors ${
+            currentPage === totalPages 
+              ? 'text-gray-300 cursor-not-allowed' 
+              : 'text-teal-500 hover:bg-teal-50'
+          }`}
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Items Count */}
+      <div className="text-sm text-gray-500">
+        Showing {startItem} - {endItem} out of {totalItems}
+      </div>
+    </div>
+  );
+};
+
 export default function EntitiesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filteredEntities = entitiesData.filter(entity => {
     const matchesSearch = entity.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = filterType === 'all' || entity.type === filterType;
     return matchesSearch && matchesType;
   });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredEntities.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedEntities = filteredEntities.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  // Reset to page 1 when filter changes
+  const handleFilterChange = (type) => {
+    setFilterType(type);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <TooltipProvider>
@@ -80,7 +220,7 @@ export default function EntitiesPage() {
                 type="text"
                 placeholder="Search entities..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 data-testid="entities-search-input"
                 className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gray-900 transition-colors"
               />
@@ -89,7 +229,7 @@ export default function EntitiesPage() {
               {['all', 'Exchange', 'Smart Money', 'Fund', 'Market Maker'].map(type => (
                 <button
                   key={type}
-                  onClick={() => setFilterType(type)}
+                  onClick={() => handleFilterChange(type)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                     filterType === type 
                       ? 'bg-gray-900 text-white' 
@@ -102,9 +242,9 @@ export default function EntitiesPage() {
             </div>
           </div>
 
-          {/* Entities Grid */}
+          {/* Entities Grid - 3x3 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredEntities.map((entity) => (
+            {paginatedEntities.map((entity) => (
               <Link key={entity.id} to={`/entity/${entity.id}`}>
                 <div className="bg-white border border-gray-200 rounded-xl p-4 hover:border-gray-900 transition-all cursor-pointer">
                   <div className="flex items-center gap-3 mb-4">
@@ -178,6 +318,17 @@ export default function EntitiesPage() {
               </Link>
             ))}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filteredEntities.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </div>
     </TooltipProvider>
