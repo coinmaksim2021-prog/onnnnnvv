@@ -451,9 +451,16 @@ export default function TokensPage() {
                 <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                   <Users className="w-4 h-4 text-gray-500" />
                   Holder Composition
-                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded" title="Who holds this token">
-                    <Info className="w-3.5 h-3.5 text-gray-400" />
-                  </button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                        <Info className="w-3.5 h-3.5 text-gray-400" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                      <p>Breakdown of who holds this token: CEX, Smart Money, Funds, Retail. Strong Hands are holders with >30 day holding duration.</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </h3>
                 <Link to="/entities" className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1">
                   View Activity <ExternalLink className="w-3 h-3" />
