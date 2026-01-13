@@ -690,7 +690,10 @@ export default function TokensPage() {
                       </div>
                     </div>
                     
-                    <button className="mt-2 text-xs text-gray-400 hover:text-white underline">
+                    <button 
+                      onClick={() => setShowStrategyModal(strategy.name)}
+                      className="mt-2 text-xs text-gray-400 hover:text-white underline"
+                    >
                       View strategy logic →
                     </button>
                   </div>
