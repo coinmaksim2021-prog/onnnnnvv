@@ -1,12 +1,21 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Wallet, TrendingUp, TrendingDown, Shield, AlertTriangle, ArrowUpRight } from 'lucide-react';
+import { 
+  Search, Wallet, TrendingUp, TrendingDown, Shield, AlertTriangle, ArrowUpRight,
+  Activity, Check, Bell, Eye, Info, X, Zap, Target, Clock
+} from 'lucide-react';
 import Header from '../components/Header';
 import { PageHeader, SectionHeader } from '../components/PageHeader';
 import { InfoIcon } from '../components/Tooltip';
 import PnLEngine from '../components/PnLEngine'; // UNIFIED: replaces CostBasisPnL + SwapsPnL
 import BehaviorFingerprint from '../components/BehaviorFingerprint';
 import AdvancedRiskFlags from '../components/AdvancedRiskFlags';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../components/ui/tooltip";
 
 const GlassCard = ({ children, className = "", hover = false }) => (
   <div className={`glass-card ${hover ? 'glass-card-hover cursor-pointer' : ''} ${className}`}>
