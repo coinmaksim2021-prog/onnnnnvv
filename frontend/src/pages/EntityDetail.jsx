@@ -957,8 +957,6 @@ const EntityAlertModal = ({ onClose, entityName }) => {
 };
 
 export default function EntityDetail() {
-
-export default function EntityDetail() {
   const { entityId } = useParams();
   const [entity, setEntity] = useState(null);
   const [showAlertModal, setShowAlertModal] = useState(false);
