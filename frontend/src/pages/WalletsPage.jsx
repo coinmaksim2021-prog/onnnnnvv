@@ -504,7 +504,7 @@ export default function WalletsPage() {
 
           {/* Detailed Analytics - COLLAPSED BY DEFAULT */}
           <div className="mb-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Detailed Analytics</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4 px-1">Detailed Analytics</h2>
         
             {/* Behavior Fingerprint - компонент уже имеет свой заголовок */}
             <div className="mb-4">
