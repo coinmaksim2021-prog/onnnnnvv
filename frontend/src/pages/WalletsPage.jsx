@@ -328,19 +328,29 @@ export default function WalletsPage() {
             <div className="flex items-center gap-2 pt-3 border-t border-white/10">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors">
-                    <Eye className="w-4 h-4" />
-                    Track Wallet
+                  <button 
+                    onClick={() => handleTrackWallet(selectedWallet)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                      isWalletTracked 
+                        ? 'bg-green-500 text-white hover:bg-green-600' 
+                        : 'bg-white text-gray-900 hover:bg-gray-100'
+                    }`}
+                  >
+                    {isWalletTracked ? <Check className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {isWalletTracked ? 'Tracking' : 'Track Wallet'}
                   </button>
                 </TooltipTrigger>
                 <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
-                  <p className="text-xs">Adds to Watchlist • Enables Alerts • Shows in Market → "Tracked Wallet Activity"</p>
+                  <p className="text-xs">{isWalletTracked ? 'Click to stop tracking this wallet' : 'Adds to Watchlist • Enables Alerts • Shows in Market → "Tracked Wallet Activity"'}</p>
                 </TooltipContent>
               </Tooltip>
               
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+                  <button 
+                    onClick={() => setShowSignalsModal(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors"
+                  >
                     <Activity className="w-4 h-4" />
                     Copy Signals
                     <span className="text-xs text-gray-400">(Read-only)</span>
