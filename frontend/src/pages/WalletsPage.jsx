@@ -506,28 +506,12 @@ export default function WalletsPage() {
           <div className="mb-6">
             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Detailed Analytics</h2>
         
-        {/* Behavior Fingerprint */}
-        <div className="mb-4">
-          <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3 px-1">
-            <Target className="w-4 h-4 text-gray-500" />
-            Behavior Fingerprint
-            <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">FACT</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
-                  <Info className="w-3.5 h-3.5 text-gray-400" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-gray-900 text-white max-w-xs">
-                <p className="mb-2">ML-based wallet classification analyzing trading patterns, DEX activity, and holding behavior.</p>
-                <p className="text-xs text-gray-400">Classification confidence: 87% based on 468 trades</p>
-              </TooltipContent>
-            </Tooltip>
-          </h3>
-          <BehaviorFingerprint address={selectedWallet} />
-        </div>
+            {/* Behavior Fingerprint - компонент уже имеет свой заголовок */}
+            <div className="mb-4">
+              <BehaviorFingerprint address={selectedWallet} />
+            </div>
 
-        {/* Risk Deep Dive - COLLAPSIBLE */}
+            {/* Risk Deep Dive - COLLAPSIBLE */}
         <div>
           <button
             onClick={() => setShowRiskDeepDive(!showRiskDeepDive)}
