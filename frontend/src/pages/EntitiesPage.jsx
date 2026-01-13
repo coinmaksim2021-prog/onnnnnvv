@@ -97,7 +97,7 @@ const Pagination = ({ currentPage, totalPages, totalItems, itemsPerPage, onPageC
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
+    <div className="flex items-center justify-between mt-6 py-4 border-t border-gray-100">
       {/* Pagination Controls */}
       <div className="flex items-center gap-1">
         {/* Previous Button */}
@@ -150,7 +150,7 @@ const Pagination = ({ currentPage, totalPages, totalItems, itemsPerPage, onPageC
 
       {/* Items Count */}
       <div className="text-sm text-gray-500">
-        Showing {startItem} - {endItem} out of {totalItems}
+        Showing <span className="font-semibold text-gray-700">{startItem} - {endItem}</span> out of <span className="font-semibold text-gray-700">{totalItems}</span>
       </div>
     </div>
   );
