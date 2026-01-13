@@ -596,7 +596,7 @@ export default function TokensPage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-500 w-16">Retail</span>
-                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full bg-gray-300 rounded-full" style={{ width: '25%' }}></div>
                   </div>
                   <span className="font-semibold text-gray-500 w-8 text-right">Sell</span>
@@ -604,7 +604,7 @@ export default function TokensPage() {
                 
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-500 w-16">Pro</span>
-                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full bg-gray-700 rounded-full" style={{ width: '75%' }}></div>
                   </div>
                   <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
@@ -612,7 +612,7 @@ export default function TokensPage() {
                 
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-500 w-16">Inst.</span>
-                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full bg-gray-800 rounded-full" style={{ width: '85%' }}></div>
                   </div>
                   <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
@@ -620,7 +620,7 @@ export default function TokensPage() {
                 
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-500 w-16">Whale</span>
-                  <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div className="h-full bg-gray-900 rounded-full" style={{ width: '90%' }}></div>
                   </div>
                   <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
@@ -628,7 +628,7 @@ export default function TokensPage() {
               </div>
               
               {/* Interpretation */}
-              <div className="pt-3 border-t border-gray-100 mt-3">
+              <div className="pt-3 border-t border-gray-100 mt-4">
                 <div className="text-xs text-gray-600">
                   <span className="font-semibold">Dominant cohort:</span> Institutional & Whale buying while Retail reduces exposure — confirms strong structure.
                 </div>
