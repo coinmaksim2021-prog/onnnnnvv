@@ -448,7 +448,19 @@ const HoldingsBreakdown = ({ holdings }) => {
   
   return (
     <GlassCard className="p-4 h-full">
-      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Holdings Breakdown</h3>
+      <div className="flex items-center gap-2 mb-4">
+        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Holdings Breakdown</h3>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button className="p-0.5 hover:bg-gray-100 rounded">
+              <Info className="w-3 h-3 text-gray-400" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">Current token allocation across all entity addresses. Shows % of total holdings per token.</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
