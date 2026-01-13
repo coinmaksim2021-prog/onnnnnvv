@@ -155,64 +155,67 @@ export default function WalletsPage() {
         <Header />
         
         <div className="px-4 py-6">
-          {/* Wallet Intelligence Summary - НОВЫЙ БЛОК */}
+          {/* Wallet Intelligence Summary - UPDATED WITH VERDICT */}
           <div className="bg-gray-900 text-white rounded-2xl p-5 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Wallet Intelligence</div>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-bold">{walletIntelligence.classification}</span>
-                  <span className="px-2 py-1 bg-white/10 rounded-lg text-xs font-medium">
-                    {walletIntelligence.currentMode}
+                <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Wallet Intelligence</div>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-3xl font-bold">FOLLOW</span>
+                  <span className="px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-lg text-sm font-semibold text-green-400">
+                    High Confidence
                   </span>
+                </div>
+                <div className="text-xs text-gray-400">
+                  Confidence: {walletIntelligence.confidence}% • Classification: {walletIntelligence.classification}
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-xs text-gray-400">Reliability Score</div>
-                <div className="text-2xl font-bold">{walletIntelligence.reliabilityScore}/100</div>
+                <div className="text-xs text-gray-400 mb-1">Reliability Score</div>
+                <div className="text-3xl font-bold">{walletIntelligence.reliabilityScore}<span className="text-xl text-gray-500">/100</span></div>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="p-3 bg-white/5 rounded-lg">
-                <div className="text-xs text-gray-400 mb-1">Classification</div>
-                <div className="text-sm font-semibold text-white">
-                  {walletIntelligence.classification}
-                  <span className="text-xs text-gray-400 ml-2">({walletIntelligence.confidence}% confidence)</span>
+            {/* Why? */}
+            <div className="mb-4 p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="text-xs text-gray-400 mb-2 uppercase tracking-wider">Why Follow This Wallet?</div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-start gap-2">
+                  <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Profitable over 6 months (+$549K)</span>
                 </div>
-              </div>
-              <div className="p-3 bg-white/5 rounded-lg">
-                <div className="text-xs text-gray-400 mb-1">Market Alignment</div>
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-400" />
-                  <span className="text-sm font-semibold text-white">{walletIntelligence.marketAlignment}</span>
+                <div className="flex items-start gap-2">
+                  <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Low systemic risk (12/100)</span>
                 </div>
-              </div>
-              <div className="p-3 bg-white/5 rounded-lg">
-                <div className="text-xs text-gray-400 mb-1">Token Overlap</div>
-                <div className="flex items-center gap-1">
-                  {walletIntelligence.tokenOverlap.map((token, i) => (
-                    <span key={i} className="px-2 py-0.5 bg-white/10 rounded text-xs font-medium">{token}</span>
-                  ))}
+                <div className="flex items-start gap-2">
+                  <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                  <span>Aligned with current market regime (Risk-On)</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-300">High frequency trader — short holding periods</span>
                 </div>
               </div>
             </div>
 
+            {/* Actionable buttons */}
             <div className="flex items-center gap-2 pt-3 border-t border-white/10">
-              <button 
-                onClick={() => setShowAlertModal(true)}
-                className="flex items-center gap-2 px-3 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors"
-              >
-                <Bell className="w-4 h-4" />
-                Create Wallet Alert
-              </button>
-              <Link to="/tokens" className="flex items-center gap-2 px-3 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
-                <Activity className="w-4 h-4" />
-                View Token Overlap
-              </Link>
-              <button className="flex items-center gap-2 px-3 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors">
                 <Eye className="w-4 h-4" />
                 Track Wallet
+              </button>
+              <button className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+                <Activity className="w-4 h-4" />
+                Copy Signals
+                <span className="text-xs text-gray-400">(Read-only)</span>
+              </button>
+              <button 
+                onClick={() => setShowAlertModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors"
+              >
+                <Bell className="w-4 h-4" />
+                Alert on Changes
               </button>
             </div>
           </div>
