@@ -100,7 +100,11 @@ const walletIntelligence = {
     (0.25 * 78) + // PnL Consistency
     (0.15 * 100) // Market Alignment
   ),
-  verdict: 'FOLLOW' // Based on score > 75
+  verdict: 'FOLLOW', // Based on score > 75
+  // Wallet State
+  walletState: 'Accumulation → Stable',
+  walletStatePeriod: 'last 14d',
+  walletStateExplanation: 'Based on net flows, hold duration, and realized PnL distribution'
 };
 
 // What happens if you follow
@@ -109,7 +113,11 @@ const followingImpact = {
   avgEntryDelay: '2.4 hours',
   expectedSlippage: '0.3%',
   confidencePeriod: 'Last 90 days',
-  tradesAnalyzed: 468
+  tradesAnalyzed: 468,
+  // Contextual PnL
+  earlyEntryProfit: '71%', // % profit from first 12h entries
+  lateEntryProfit: '29%', // % profit from late entries
+  replicability: 'Medium' // High/Medium/Low
 };
 
 // Wallet Alerts configuration
