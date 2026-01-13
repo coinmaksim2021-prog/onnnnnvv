@@ -505,7 +505,6 @@ export default function WalletsPage() {
           {/* Detailed Analytics - COLLAPSED BY DEFAULT */}
           <div className="mb-6">
             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Detailed Analytics</h2>
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Detailed Analytics</h2>
         
         {/* Behavior Fingerprint */}
         <div className="mb-4">
