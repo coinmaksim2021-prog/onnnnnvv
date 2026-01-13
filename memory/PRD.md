@@ -175,6 +175,25 @@ Deploy and customize a crypto analytics dashboard from GitHub repository. Focus 
 - `/app/frontend/src/components/AlertModal.jsx` - Alert creation modal
 - `/app/frontend/src/components/MarketDislocationCard.jsx` - Edge detection card
 
+### January 13, 2026 - Entities Page Refactoring (COMPLETE ✅)
+- [x] **ENTITY INTELLIGENCE** - Decision Layer (like Wallets)
+  - SUPPORTIVE/NEUTRAL/CONCERNING verdict with Decision Score
+  - Current State indicator (Accumulating → Stable)
+  - Why This Verdict? block with reasons
+  - High/Moderate/Low Confidence badge
+- [x] **ENTITY IMPACT ENGINE** - Connection to Tokens & Market
+  - Market Impact: Accumulating tokens, Net Flow vs Market, Lead Time, Regime Alignment
+  - Token Alignment: Shows which tokens align with entity activity
+  - Insight block linking to Tokens page analysis
+- [x] **TRACK ENTITY** - Toggle button with state
+- [x] **ALERT MODAL** - 2x2 grid layout
+  - Net Flow Flip, Token Exit, Accumulation Start, Behavior Shift
+- [x] **ADVANCED ANALYTICS** - Collapsed by default
+  - Top Accumulated/Distributed (7d)
+  - Recent Transactions
+- [x] **TOOLTIPS** - Confidence, Net Flow, Decision Score
+- [x] **MONOCHROME DESIGN** - Unified with Wallets/Tokens pages
+
 ## Notes
 - **ALL DATA IS MOCKED** - Frontend uses hardcoded mock data
 - User prefers Russian language for communication
