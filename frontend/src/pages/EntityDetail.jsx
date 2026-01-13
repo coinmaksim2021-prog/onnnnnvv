@@ -3,7 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { 
   ChevronLeft, Wallet, Building, TrendingUp, TrendingDown, ExternalLink, Activity,
   ArrowUpRight, ArrowDownRight, PieChart, BarChart3, Users, Coins, AlertTriangle,
-  Check, X, Info, ChevronDown, ChevronUp, Bell, Eye, Target, Zap
+  Check, X, Info, ChevronDown, ChevronUp, Bell, Eye, Target, Zap, Filter, ArrowRight,
+  Percent, Clock, BarChart2, ArrowLeftRight
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, CartesianGrid, PieChart as RechartPie, Pie, Cell } from 'recharts';
 import Header from '../components/Header';
@@ -13,15 +14,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../components/ui/tooltip";
-
-// Chart colors
-const chartColors = {
-  primary: '#374151',
-  primaryLight: '#6B7280',
-  secondary: '#9CA3AF',
-  positive: '#374151',
-  negative: '#9CA3AF',
-};
 
 const GlassCard = ({ children, className = "", hover = false }) => (
   <div className={`bg-white border border-gray-200 rounded-xl ${hover ? 'hover:border-gray-900 cursor-pointer' : ''} ${className}`}>
@@ -45,17 +37,29 @@ const getEntityIntelligence = (entityId) => {
         { positive: true, text: 'No abnormal outflow spikes detected' },
         { positive: false, text: 'Minor BTC distribution detected (-$56M)' }
       ],
+      // Token Impact Matrix
+      tokenImpact: [
+        { token: 'ETH', direction: 'accumulation', strength: 'High', confidence: 82, impactScore: 8.4 },
+        { token: 'BTC', direction: 'distribution', strength: 'Medium', confidence: 68, impactScore: 5.2 },
+        { token: 'SOL', direction: 'accumulation', strength: 'High', confidence: 79, impactScore: 7.1 },
+        { token: 'ARB', direction: 'accumulation', strength: 'Medium', confidence: 71, impactScore: 4.8 },
+        { token: 'USDT', direction: 'neutral', strength: 'Low', confidence: 45, impactScore: 2.1 }
+      ],
+      // Historical Effect
+      historicalEffect: {
+        condition: 'Net inflow > $100M in 24h',
+        occurrences: 47,
+        marketUpPct: 72,
+        avgLagDays: 1.3,
+        medianMove: '+3.2%',
+        bestResponse: 'Early accumulation within 24h window'
+      },
       marketImpact: {
         accumulatingTokens: ['ETH', 'SOL', 'ARB'],
         netFlowVsMarket: '+42%',
         leadTime: '~1.3 days',
         regimeAlignment: 'Risk-On'
-      },
-      tokenAlignment: [
-        { token: 'ETH', status: 'Aligned', structure: 'Accumulation' },
-        { token: 'SOL', status: 'Aligned', structure: 'Bullish' },
-        { token: 'ARB', status: 'Aligned', structure: 'Supportive' }
-      ]
+      }
     },
     coinbase: {
       verdict: 'NEUTRAL',
@@ -70,51 +74,69 @@ const getEntityIntelligence = (entityId) => {
         { positive: true, text: 'Institutional custody remains strong' },
         { positive: false, text: 'Rotation between BTC and altcoins' }
       ],
+      tokenImpact: [
+        { token: 'ETH', direction: 'neutral', strength: 'Medium', confidence: 58, impactScore: 4.2 },
+        { token: 'BTC', direction: 'distribution', strength: 'Medium', confidence: 65, impactScore: 5.8 },
+        { token: 'LINK', direction: 'accumulation', strength: 'Low', confidence: 52, impactScore: 3.1 }
+      ],
+      historicalEffect: {
+        condition: 'Net outflow > $50M in 24h',
+        occurrences: 34,
+        marketUpPct: 38,
+        avgLagDays: 0.8,
+        medianMove: '-1.8%',
+        bestResponse: 'Wait for confirmation or reduce exposure'
+      },
       marketImpact: {
         accumulatingTokens: ['USDC', 'LINK'],
         netFlowVsMarket: '-8%',
         leadTime: '~0.5 days',
         regimeAlignment: 'Neutral'
-      },
-      tokenAlignment: [
-        { token: 'ETH', status: 'Partial', structure: 'Mixed signals' },
-        { token: 'BTC', status: 'Distributing', structure: 'Outflow' }
-      ]
+      }
     }
   };
   return data[entityId] || data.binance;
 };
 
-// Alert types for Entity
+// Alert types for Entity (including new Market Impact Alert)
 const entityAlertTypes = [
+  {
+    id: 'market_impact',
+    name: 'Market Impact Alert',
+    description: 'Alert on significant market-moving activity',
+    triggers: ['Net flow exceeds X% of token daily volume', 'Entity activity > historical avg'],
+    icon: Target,
+    isNew: true
+  },
   {
     id: 'net_flow_flip',
     name: 'Net Flow Flip',
     description: 'Alert when net flow direction changes',
-    triggers: ['Net flow flips from positive to negative', 'Net flow flips from negative to positive'],
+    triggers: ['Net flow flips from + to -', 'Net flow flips from - to +'],
     icon: Activity
   },
   {
     id: 'token_exit',
     name: 'Token Exit',
     description: 'Alert when entity exits a position',
-    triggers: ['Entity exits top-3 accumulated token', 'Large distribution detected'],
+    triggers: ['Entity exits top-3 token', 'Large distribution detected'],
     icon: TrendingDown
-  },
-  {
-    id: 'accumulation_start',
-    name: 'Accumulation Start',
-    description: 'Alert on new accumulation patterns',
-    triggers: ['Entity starts accumulating token you track', 'New position opened'],
-    icon: TrendingUp
   },
   {
     id: 'behavior_shift',
     name: 'Behavior Shift',
     description: 'Alert on entity behavior changes',
-    triggers: ['Shift from Accumulating to Distributing', 'Activity pattern change'],
+    triggers: ['Accumulating → Distributing', 'Activity pattern change'],
     icon: AlertTriangle
   }
+];
+
+// Transaction filter types
+const txFilterTypes = [
+  { id: 'all', label: 'All' },
+  { id: 'market_moving', label: 'Market-Moving' },
+  { id: 'first_entry', label: 'First Entry' },
+  { id: 'cross_entity', label: 'Cross-Entity' }
 ];
 
 // Entity Intelligence Header (Decision Layer)
@@ -150,21 +172,10 @@ const EntityIntelligence = ({ entity, intelligence, onTrack, onAlert, isTracked 
             </Tooltip>
             • {entity.type}
           </div>
-          {/* Entity State */}
           <div className="flex items-center gap-2 text-xs">
             <span className="text-gray-400">Current State:</span>
             <span className="font-semibold text-white">{intelligence.state}</span>
             <span className="text-gray-500">({intelligence.statePeriod})</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className="p-0.5 hover:bg-white/10 rounded">
-                  <Info className="w-3 h-3 text-gray-400" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
-                <p className="text-xs">Based on net flows, holdings changes, and transaction patterns across all entity addresses</p>
-              </TooltipContent>
-            </Tooltip>
           </div>
         </div>
         <div className="text-right">
@@ -223,7 +234,7 @@ const EntityIntelligence = ({ entity, intelligence, onTrack, onAlert, isTracked 
             </button>
           </TooltipTrigger>
           <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
-            <p className="text-xs">Get notified on net flow flips, token exits, and behavior shifts</p>
+            <p className="text-xs">Get notified on net flow flips, token exits, and market impact events</p>
           </TooltipContent>
         </Tooltip>
       </div>
@@ -231,16 +242,101 @@ const EntityIntelligence = ({ entity, intelligence, onTrack, onAlert, isTracked 
   );
 };
 
-// Entity Impact Engine (связь с Tokens и Market)
-const EntityImpactEngine = ({ intelligence }) => {
-  const { marketImpact, tokenAlignment } = intelligence;
-  
+// NEW: Token Impact Matrix Component
+const TokenImpactMatrix = ({ tokenImpact, entityName }) => {
+  const getDirectionIcon = (direction) => {
+    switch(direction) {
+      case 'accumulation': return <TrendingUp className="w-4 h-4" />;
+      case 'distribution': return <TrendingDown className="w-4 h-4" />;
+      default: return <ArrowLeftRight className="w-4 h-4" />;
+    }
+  };
+
+  const getDirectionStyle = (direction) => {
+    switch(direction) {
+      case 'accumulation': return 'text-gray-900';
+      case 'distribution': return 'text-gray-500';
+      default: return 'text-gray-400';
+    }
+  };
+
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6">
+    <GlassCard className="p-5 mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Target className="w-5 h-5 text-gray-700" />
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Token Impact Matrix</h3>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="p-0.5 hover:bg-gray-100 rounded">
+                <Info className="w-3.5 h-3.5 text-gray-400" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-900 text-white max-w-sm border border-white/20">
+              <p className="text-xs mb-2">Shows which tokens are affected when {entityName} acts.</p>
+              <p className="text-xs text-gray-400">Impact Score = (Entity Flow % of token mcap) + (Tx frequency) + (Historical correlation)</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        <span className="text-xs text-gray-500">If {entityName} acts → which tokens move?</span>
+      </div>
+
+      {/* Table Header */}
+      <div className="grid grid-cols-5 gap-4 pb-3 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
+        <div>Token</div>
+        <div>Direction</div>
+        <div>Strength</div>
+        <div>Confidence</div>
+        <div className="text-right">Impact</div>
+      </div>
+
+      {/* Table Body */}
+      <div className="divide-y divide-gray-100">
+        {tokenImpact.map((item, i) => (
+          <div key={i} className="grid grid-cols-5 gap-4 py-3 items-center">
+            <div className="font-semibold text-gray-900">{item.token}</div>
+            <div className={`flex items-center gap-1.5 ${getDirectionStyle(item.direction)}`}>
+              {getDirectionIcon(item.direction)}
+              <span className="capitalize text-sm">{item.direction}</span>
+            </div>
+            <div>
+              <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                item.strength === 'High' ? 'bg-gray-900 text-white' :
+                item.strength === 'Medium' ? 'bg-gray-200 text-gray-700' :
+                'bg-gray-100 text-gray-500'
+              }`}>
+                {item.strength}
+              </span>
+            </div>
+            <div className="text-sm text-gray-700">{item.confidence}%</div>
+            <div className="text-right">
+              <span className={`font-bold ${item.impactScore >= 7 ? 'text-gray-900' : item.impactScore >= 4 ? 'text-gray-700' : 'text-gray-400'}`}>
+                {item.impactScore.toFixed(1)}
+              </span>
+              <span className="text-xs text-gray-400">/10</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Insight */}
+      <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="text-xs text-gray-600">
+          <span className="font-semibold">Actionable Insight:</span> When {entityName} accumulates ETH/SOL, consider early entry within 24h. Distribution signals suggest reducing exposure or waiting.
+        </div>
+      </div>
+    </GlassCard>
+  );
+};
+
+// NEW: Historical Effect Component
+const HistoricalEffect = ({ historicalEffect, entityName }) => {
+  return (
+    <GlassCard className="p-5 mb-6">
       <div className="flex items-center gap-2 mb-4">
-        <Zap className="w-5 h-5 text-gray-700" />
-        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Entity Impact Engine</h3>
-        <span className="px-2 py-0.5 bg-gray-100 rounded text-xs font-medium text-gray-600">MODEL</span>
+        <Clock className="w-5 h-5 text-gray-700" />
+        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Historical Effect</h3>
+        <span className="px-2 py-0.5 bg-gray-100 rounded text-xs font-medium text-gray-600">STATISTICS</span>
         <Tooltip>
           <TooltipTrigger asChild>
             <button className="p-0.5 hover:bg-gray-100 rounded">
@@ -248,72 +344,43 @@ const EntityImpactEngine = ({ intelligence }) => {
             </button>
           </TooltipTrigger>
           <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
-            <p className="text-xs">Shows how this entity's activity impacts tokens and aligns with market regime</p>
+            <p className="text-xs">Historical statistics when this condition occurred. Not a prediction — factual data.</p>
           </TooltipContent>
         </Tooltip>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
-        {/* Market Impact */}
-        <div>
-          <div className="text-xs font-semibold text-gray-500 uppercase mb-3">Market Impact</div>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm text-gray-600">Accumulating</span>
-              <div className="flex items-center gap-2">
-                {marketImpact.accumulatingTokens.map(token => (
-                  <span key={token} className="px-2 py-0.5 bg-gray-900 text-white rounded text-xs font-semibold">{token}</span>
-                ))}
-              </div>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm text-gray-600">Net Flow vs Market</span>
-              <span className={`font-bold ${marketImpact.netFlowVsMarket.startsWith('+') ? 'text-gray-900' : 'text-gray-500'}`}>
-                {marketImpact.netFlowVsMarket}
-              </span>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm text-gray-600">Historically Leads Market</span>
-              <span className="font-bold text-gray-900">{marketImpact.leadTime}</span>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <span className="text-sm text-gray-600">Regime Alignment</span>
-              <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                marketImpact.regimeAlignment === 'Risk-On' ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700'
-              }`}>
-                {marketImpact.regimeAlignment}
-              </span>
-            </div>
-          </div>
-        </div>
+      {/* Condition */}
+      <div className="p-4 bg-gray-900 text-white rounded-xl mb-4">
+        <div className="text-xs text-gray-400 mb-1">WHEN</div>
+        <div className="text-lg font-bold">{entityName} {historicalEffect.condition}</div>
+        <div className="text-xs text-gray-400 mt-1">{historicalEffect.occurrences} occurrences in last 180 days</div>
+      </div>
 
-        {/* Token Alignment */}
-        <div>
-          <div className="text-xs font-semibold text-gray-500 uppercase mb-3">Token Alignment</div>
-          <div className="space-y-2">
-            {tokenAlignment.map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-gray-900">{item.token}</span>
-                  <span className="text-xs text-gray-500">{item.structure}</span>
-                </div>
-                <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                  item.status === 'Aligned' ? 'bg-gray-900 text-white' : 
-                  item.status === 'Partial' ? 'bg-gray-200 text-gray-700' : 'bg-gray-100 text-gray-500'
-                }`}>
-                  {item.status}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-3 p-3 border border-gray-200 rounded-lg">
-            <div className="text-xs text-gray-600">
-              <span className="font-semibold">Insight:</span> Entity activity aligns with tokens showing confirmed bullish structure from Tokens page
-            </div>
-          </div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="p-4 bg-gray-50 rounded-xl text-center">
+          <div className="text-2xl font-bold text-gray-900">{historicalEffect.marketUpPct}%</div>
+          <div className="text-xs text-gray-500 mt-1">Market moved up after</div>
+        </div>
+        <div className="p-4 bg-gray-50 rounded-xl text-center">
+          <div className="text-2xl font-bold text-gray-900">{historicalEffect.avgLagDays}d</div>
+          <div className="text-xs text-gray-500 mt-1">Avg lag to market reaction</div>
+        </div>
+        <div className="p-4 bg-gray-50 rounded-xl text-center">
+          <div className="text-2xl font-bold text-gray-900">{historicalEffect.medianMove}</div>
+          <div className="text-xs text-gray-500 mt-1">Median price move</div>
         </div>
       </div>
-    </div>
+
+      {/* Best Response */}
+      <div className="p-4 border border-gray-200 rounded-xl">
+        <div className="flex items-center gap-2 mb-2">
+          <Zap className="w-4 h-4 text-gray-700" />
+          <span className="text-sm font-semibold text-gray-900">Best Response</span>
+        </div>
+        <div className="text-sm text-gray-700">{historicalEffect.bestResponse}</div>
+      </div>
+    </GlassCard>
   );
 };
 
@@ -368,21 +435,6 @@ const HoldingsBreakdown = ({ holdings }) => {
 const NetflowChart = ({ netflowData }) => {
   const [period, setPeriod] = useState('7D');
   
-  const NetflowTooltipContent = ({ active, payload, label }) => {
-    if (!active || !payload || !payload.length) return null;
-    const value = payload[0]?.value || 0;
-    const isPositive = value >= 0;
-    
-    return (
-      <div className="bg-gray-900 text-white p-3 rounded-lg shadow-xl border border-white/10">
-        <div className="text-xs text-gray-400 mb-1">{label}</div>
-        <div className={`text-sm font-bold ${isPositive ? 'text-white' : 'text-gray-400'}`}>
-          {isPositive ? '+' : ''}${(Math.abs(value) / 1e6).toFixed(1)}M
-        </div>
-      </div>
-    );
-  };
-  
   return (
     <GlassCard className="p-4 h-full">
       <div className="flex items-center justify-between mb-4">
@@ -423,29 +475,9 @@ const NetflowChart = ({ netflowData }) => {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="0" stroke="rgba(0,0,0,0.03)" vertical={false} />
-            <XAxis 
-              dataKey="date" 
-              tick={{ fontSize: 11, fill: '#9CA3AF', fontWeight: 500 }} 
-              stroke="transparent"
-              tickLine={false}
-            />
-            <YAxis 
-              tick={{ fontSize: 11, fill: '#9CA3AF', fontWeight: 500 }} 
-              stroke="transparent"
-              tickLine={false}
-              tickFormatter={(v) => `${v > 0 ? '+' : ''}${(v/1e6).toFixed(0)}M`}
-              width={55}
-            />
-            <RechartsTooltip content={<NetflowTooltipContent />} />
-            <Area 
-              type="monotone" 
-              dataKey="netflow" 
-              stroke="#374151"
-              strokeWidth={2.5}
-              fill="url(#netflowGradient)"
-              dot={false}
-              activeDot={{ r: 5, stroke: '#374151', strokeWidth: 2, fill: '#fff' }}
-            />
+            <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#9CA3AF' }} stroke="transparent" tickLine={false} />
+            <YAxis tick={{ fontSize: 11, fill: '#9CA3AF' }} stroke="transparent" tickLine={false} tickFormatter={(v) => `${v > 0 ? '+' : ''}${(v/1e6).toFixed(0)}M`} width={55} />
+            <Area type="monotone" dataKey="netflow" stroke="#374151" strokeWidth={2.5} fill="url(#netflowGradient)" dot={false} />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -453,42 +485,38 @@ const NetflowChart = ({ netflowData }) => {
   );
 };
 
-const TopAccumulated = ({ tokens, type }) => {
-  const isAccumulated = type === 'accumulated';
-  
-  return (
-    <GlassCard className="p-4 h-full">
-      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">
-        Top {isAccumulated ? 'Accumulated' : 'Distributed'} (7d)
-      </h3>
-      <div className="space-y-2">
-        {tokens.map((token, i) => (
-          <div key={i} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
-            <div className="flex items-center gap-3">
-              <span className="text-lg font-bold text-gray-400">#{i + 1}</span>
-              <img src={token.logo} alt={token.symbol} className="w-8 h-8 rounded-full" />
-              <div>
-                <div className="font-semibold text-gray-900">{token.symbol}</div>
-                <div className="text-xs text-gray-500">{token.name}</div>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className={`font-bold ${isAccumulated ? 'text-gray-900' : 'text-gray-500'}`}>
-                {isAccumulated ? '+' : '-'}${(token.amount / 1e6).toFixed(1)}M
-              </div>
-              <div className="text-xs text-gray-500">{token.transactions} txns</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </GlassCard>
-  );
-};
-
+// Enhanced Recent Transactions with Filters
 const RecentTransactions = ({ transactions }) => {
+  const [txFilter, setTxFilter] = useState('all');
+
+  const filteredTx = transactions.filter(tx => {
+    if (txFilter === 'all') return true;
+    if (txFilter === 'market_moving') return tx.isMarketMoving;
+    if (txFilter === 'first_entry') return tx.isFirstEntry;
+    if (txFilter === 'cross_entity') return tx.isCrossEntity;
+    return true;
+  });
+
   return (
     <GlassCard className="p-4">
-      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Recent Transactions</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Recent Transactions</h3>
+        <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-0.5">
+          {txFilterTypes.map(filter => (
+            <button
+              key={filter.id}
+              onClick={() => setTxFilter(filter.id)}
+              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                txFilter === filter.id 
+                  ? 'bg-gray-900 text-white' 
+                  : 'text-gray-600 hover:bg-white'
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -497,11 +525,12 @@ const RecentTransactions = ({ transactions }) => {
               <th className="py-2 px-3 text-left text-xs font-semibold text-gray-500 uppercase">Token</th>
               <th className="py-2 px-3 text-right text-xs font-semibold text-gray-500 uppercase">Amount</th>
               <th className="py-2 px-3 text-left text-xs font-semibold text-gray-500 uppercase">Counterparty</th>
+              <th className="py-2 px-3 text-left text-xs font-semibold text-gray-500 uppercase">Flag</th>
               <th className="py-2 px-3 text-right text-xs font-semibold text-gray-500 uppercase">Time</th>
             </tr>
           </thead>
           <tbody>
-            {transactions.map((tx, i) => (
+            {filteredTx.map((tx, i) => (
               <tr key={i} className="border-b border-gray-50 hover:bg-gray-50">
                 <td className="py-2 px-3">
                   <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold ${
@@ -521,6 +550,18 @@ const RecentTransactions = ({ transactions }) => {
                 <td className="py-2 px-3">
                   <code className="text-xs text-gray-600">{tx.counterparty}</code>
                 </td>
+                <td className="py-2 px-3">
+                  {tx.flag && (
+                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                      tx.flag === 'Market-Moving' ? 'bg-gray-900 text-white' :
+                      tx.flag === 'First Entry' ? 'bg-teal-100 text-teal-700' :
+                      tx.flag === 'Cross-Entity' ? 'bg-purple-100 text-purple-700' :
+                      'bg-gray-100 text-gray-600'
+                    }`}>
+                      {tx.flag}
+                    </span>
+                  )}
+                </td>
                 <td className="py-2 px-3 text-right text-xs text-gray-500">{tx.time}</td>
               </tr>
             ))}
@@ -531,8 +572,11 @@ const RecentTransactions = ({ transactions }) => {
   );
 };
 
-// Alert Modal
-const EntityAlertModal = ({ onClose }) => {
+// Alert Modal with Market Impact Alert
+const EntityAlertModal = ({ onClose, entityName }) => {
+  const [selectedAlert, setSelectedAlert] = useState(null);
+  const [threshold, setThreshold] = useState('0.15');
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-white rounded-2xl p-6 max-w-2xl w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
@@ -547,38 +591,73 @@ const EntityAlertModal = ({ onClose }) => {
         </div>
         
         <p className="text-sm text-gray-600 mb-4">
-          Monitor entity behavior changes that impact tokens you track
+          Monitor {entityName} activity that impacts your portfolio or market
         </p>
         
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 mb-4">
           {entityAlertTypes.map((alert) => {
             const Icon = alert.icon;
             return (
-              <div key={alert.id} className="p-4 border border-gray-200 rounded-xl hover:border-gray-900 transition-colors cursor-pointer group">
+              <div 
+                key={alert.id} 
+                onClick={() => setSelectedAlert(alert.id)}
+                className={`p-4 border rounded-xl transition-colors cursor-pointer group ${
+                  selectedAlert === alert.id ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-900'
+                }`}
+              >
                 <div className="flex items-start gap-3">
-                  <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-gray-900 transition-colors flex-shrink-0">
-                    <Icon className="w-4 h-4 text-gray-600 group-hover:text-white" />
+                  <div className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
+                    selectedAlert === alert.id ? 'bg-gray-900' : 'bg-gray-100 group-hover:bg-gray-900'
+                  }`}>
+                    <Icon className={`w-4 h-4 ${selectedAlert === alert.id ? 'text-white' : 'text-gray-600 group-hover:text-white'}`} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-gray-900 text-sm mb-1">{alert.name}</h4>
-                    <p className="text-xs text-gray-600 mb-2">{alert.description}</p>
-                    <ul className="space-y-0.5 text-xs text-gray-500">
-                      {alert.triggers.map((trigger, i) => (
-                        <li key={i} className="flex items-start gap-1">
-                          <span className="text-gray-400">•</span>
-                          <span className="line-clamp-1">{trigger}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-semibold text-gray-900 text-sm">{alert.name}</h4>
+                      {alert.isNew && <span className="px-1.5 py-0.5 bg-teal-500 text-white rounded text-xs">NEW</span>}
+                    </div>
+                    <p className="text-xs text-gray-600 mt-1">{alert.description}</p>
                   </div>
                 </div>
               </div>
             );
           })}
         </div>
+
+        {/* Market Impact Alert Configuration */}
+        {selectedAlert === 'market_impact' && (
+          <div className="p-4 bg-gray-50 rounded-xl mb-4">
+            <div className="text-sm font-semibold text-gray-900 mb-3">Configure Alert Threshold</div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-600">Notify when {entityName} net flow exceeds</span>
+              <input 
+                type="text"
+                value={threshold}
+                onChange={(e) => setThreshold(e.target.value)}
+                className="w-20 px-3 py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-center"
+              />
+              <span className="text-sm text-gray-600">% of BTC daily volume</span>
+            </div>
+            <div className="mt-2 text-xs text-gray-500">
+              Example: {entityName} flow &gt; 0.15% of BTC daily volume ≈ $15M typically triggers significant market reaction
+            </div>
+          </div>
+        )}
         
-        <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500">
-          <span className="font-medium">Note:</span> Entity alerts connect to your token watchlist — get notified when entity activity affects tokens you track.
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <div className="text-xs text-gray-500">
+            Entity alerts connect to your token watchlist
+          </div>
+          <button 
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+              selectedAlert 
+                ? 'bg-gray-900 text-white hover:bg-gray-800' 
+                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+            }`}
+            disabled={!selectedAlert}
+          >
+            Create Alert
+          </button>
         </div>
       </div>
     </div>
@@ -620,7 +699,6 @@ export default function EntityDetail() {
       { symbol: 'USDT', name: 'Tether', value: 3400000000, percentage: 12.0, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png' },
       { symbol: 'BNB', name: 'BNB', value: 2100000000, percentage: 7.4, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png' },
       { symbol: 'SOL', name: 'Solana', value: 890000000, percentage: 3.1, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png' },
-      { symbol: 'Other', name: 'Other', value: 610000000, percentage: 2.2, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' },
     ];
 
     const mockNetflow = [
@@ -633,34 +711,18 @@ export default function EntityDetail() {
       { date: 'Sun', netflow: 125000000 },
     ];
 
-    const mockAccumulated = [
-      { symbol: 'ETH', name: 'Ethereum', amount: 89000000, transactions: 1247, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' },
-      { symbol: 'SOL', name: 'Solana', amount: 45000000, transactions: 892, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png' },
-      { symbol: 'ARB', name: 'Arbitrum', amount: 23000000, transactions: 456, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png' },
-      { symbol: 'LINK', name: 'Chainlink', amount: 12000000, transactions: 234, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1975.png' },
-    ];
-
-    const mockDistributed = [
-      { symbol: 'BTC', name: 'Bitcoin', amount: 56000000, transactions: 567, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-      { symbol: 'USDT', name: 'Tether', amount: 34000000, transactions: 1234, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png' },
-      { symbol: 'MATIC', name: 'Polygon', amount: 18000000, transactions: 345, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png' },
-      { symbol: 'AVAX', name: 'Avalanche', amount: 9000000, transactions: 123, logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png' },
-    ];
-
     const mockTransactions = [
-      { type: 'inflow', token: 'ETH', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png', amount: '$12.5M', counterparty: '0x742d...f0bEb', time: '2m ago' },
-      { type: 'outflow', token: 'BTC', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png', amount: '$8.9M', counterparty: '0x1bc9...7f8a', time: '15m ago' },
-      { type: 'inflow', token: 'SOL', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png', amount: '$4.2M', counterparty: '0xa3f8...e2d4', time: '32m ago' },
-      { type: 'outflow', token: 'USDT', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png', amount: '$2.1M', counterparty: '0x5678...abcd', time: '1h ago' },
-      { type: 'inflow', token: 'ARB', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png', amount: '$1.8M', counterparty: '0x9abc...ijkl', time: '2h ago' },
+      { type: 'inflow', token: 'ETH', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png', amount: '$12.5M', counterparty: '0x742d...f0bEb', time: '2m ago', isMarketMoving: true, flag: 'Market-Moving' },
+      { type: 'outflow', token: 'BTC', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png', amount: '$8.9M', counterparty: '0x1bc9...whale', time: '15m ago', isCrossEntity: true, flag: 'Cross-Entity' },
+      { type: 'inflow', token: 'SOL', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png', amount: '$4.2M', counterparty: '0xa3f8...e2d4', time: '32m ago', isFirstEntry: true, flag: 'First Entry' },
+      { type: 'outflow', token: 'USDT', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png', amount: '$2.1M', counterparty: '0x5678...abcd', time: '1h ago', flag: null },
+      { type: 'inflow', token: 'ARB', logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/11841.png', amount: '$1.8M', counterparty: '0x9abc...ijkl', time: '2h ago', isMarketMoving: true, flag: 'Market-Moving' },
     ];
 
     setEntity({
       ...mockEntity,
       holdings: mockHoldings,
       netflowData: mockNetflow,
-      accumulated: mockAccumulated,
-      distributed: mockDistributed,
       transactions: mockTransactions,
     });
   }, [entityId]);
@@ -751,12 +813,17 @@ export default function EntityDetail() {
           />
         </div>
 
-        {/* Entity Impact Engine */}
+        {/* NEW: Token Impact Matrix */}
         <div className="px-4">
-          <EntityImpactEngine intelligence={intelligence} />
+          <TokenImpactMatrix tokenImpact={intelligence.tokenImpact} entityName={entity.name} />
         </div>
 
-        {/* Core Metrics (always visible) */}
+        {/* NEW: Historical Effect */}
+        <div className="px-4">
+          <HistoricalEffect historicalEffect={intelligence.historicalEffect} entityName={entity.name} />
+        </div>
+
+        {/* Core Metrics */}
         <div className="px-4 pb-4">
           <h2 className="text-lg font-bold text-gray-900 mb-4 px-1">Core Metrics</h2>
           <div className="grid grid-cols-2 gap-4">
@@ -772,7 +839,7 @@ export default function EntityDetail() {
             className="w-full flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors mb-4"
           >
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-gray-900">Advanced Analytics</h2>
+              <h2 className="text-lg font-bold text-gray-900">Recent Transactions</h2>
               <span className="px-2 py-0.5 bg-gray-100 rounded text-xs font-medium text-gray-600">FACT</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -782,19 +849,12 @@ export default function EntityDetail() {
           </button>
 
           {showAdvancedAnalytics && (
-            <>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <TopAccumulated tokens={entity.accumulated} type="accumulated" />
-                <TopAccumulated tokens={entity.distributed} type="distributed" />
-              </div>
-
-              <RecentTransactions transactions={entity.transactions} />
-            </>
+            <RecentTransactions transactions={entity.transactions} />
           )}
         </div>
 
         {/* Alert Modal */}
-        {showAlertModal && <EntityAlertModal onClose={() => setShowAlertModal(false)} />}
+        {showAlertModal && <EntityAlertModal onClose={() => setShowAlertModal(false)} entityName={entity.name} />}
       </div>
     </TooltipProvider>
   );
