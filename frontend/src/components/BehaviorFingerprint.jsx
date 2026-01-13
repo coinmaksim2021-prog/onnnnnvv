@@ -93,8 +93,8 @@ export default function BehaviorFingerprint() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 flex-1">
-        {/* Radar Chart */}
+      <div className="grid grid-cols-3 gap-4 flex-1">
+        {/* Radar Chart - ЛЕВАЯ ЧАСТЬ */}
         <div className="flex flex-col">
           <div className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Activity Profile</div>
           <div className="flex-1">
@@ -103,19 +103,19 @@ export default function BehaviorFingerprint() {
                 <PolarGrid stroke="rgba(0,0,0,0.06)" />
                 <PolarAngleAxis 
                   dataKey="metric" 
-                  tick={{ fontSize: 10, fill: '#8E8E93', fontWeight: 500 }}
+                  tick={{ fontSize: 9, fill: '#6B7280', fontWeight: 500 }}
                 />
                 <PolarRadiusAxis 
                   angle={90} 
                   domain={[0, 100]} 
-                  tick={{ fontSize: 9, fill: '#8E8E93' }}
+                  tick={{ fontSize: 8, fill: '#9CA3AF' }}
                 />
                 <Radar 
                   name="Activity" 
                   dataKey="value" 
-                  stroke="#007AFF" 
-                  fill="#007AFF" 
-                  fillOpacity={0.3}
+                  stroke="#374151" 
+                  fill="#6B7280" 
+                  fillOpacity={0.2}
                   strokeWidth={2}
                 />
               </RadarChart>
@@ -123,52 +123,44 @@ export default function BehaviorFingerprint() {
           </div>
         </div>
 
-        {/* Trading Patterns */}
+        {/* Key Metrics - ЦЕНТР (сжатая таблица) */}
         <div className="flex flex-col">
           <div className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Key Metrics</div>
-          <div className="space-y-2 flex-1">
+          <div className="space-y-1.5 flex-1">
             {tradingPatterns.map((pattern, i) => {
               const Icon = pattern.icon;
               return (
-                <div key={i} className="flex items-center justify-between p-2 bg-gray-50 rounded-2xl">
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4 text-gray-600" />
+                <div key={i} className="flex items-center justify-between p-1.5 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-1.5">
+                    <Icon className="w-3.5 h-3.5 text-gray-600" />
                     <span className="text-xs text-gray-600">{pattern.pattern}</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-bold text-gray-900">{pattern.value}</span>
-                    {getTrendIcon(pattern.trend)}
-                  </div>
+                  <span className="text-xs font-bold text-gray-900">{pattern.value}</span>
                 </div>
               );
             })}
           </div>
         </div>
-      </div>
 
-      {/* Activity Breakdown */}
-      <div className="mt-4">
-        <div className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Activity Breakdown</div>
-        <div className="space-y-1.5">
-          {activityBreakdown.map((activity, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <div className="flex-1">
+        {/* Activity Breakdown - ПРАВАЯ ЧАСТЬ */}
+        <div className="flex flex-col">
+          <div className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Activity Breakdown</div>
+          <div className="space-y-1.5 flex-1">
+            {activityBreakdown.map((activity, i) => (
+              <div key={i}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-semibold text-gray-700">{activity.type}</span>
-                  <span className="text-xs font-bold" style={{ color: activity.color }}>{activity.pct}%</span>
+                  <span className="text-xs text-gray-700">{activity.type}</span>
+                  <span className="text-xs font-bold text-gray-900">{activity.pct}%</span>
                 </div>
-                <div className="progress-bar-container h-2">
+                <div className="progress-bar-container h-1.5">
                   <div 
-                    className="h-full rounded-full transition-all"
-                    style={{ 
-                      width: `${activity.pct}%`,
-                      background: `linear-gradient(90deg, ${activity.color}, ${activity.color}CC)`
-                    }}
+                    className="h-full rounded-full bg-gray-700"
+                    style={{ width: `${activity.pct}%` }}
                   />
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </GlassCard>
