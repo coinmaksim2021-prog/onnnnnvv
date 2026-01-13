@@ -155,52 +155,45 @@ export default function AdvancedRiskFlags() {
       </div>
 
       {viewMode === 'overview' && (
-        <div className="flex-1 space-y-3 overflow-auto">
-          {riskCategories.map((risk, i) => {
-            const Icon = risk.icon;
-            return (
-              <div key={i} className="p-3 bg-gray-50 rounded-2xl hover:bg-gray-100/50 transition-colors">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm font-bold text-gray-900">{risk.category}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-sm font-bold ${getScoreColor(risk.score)}`}>{risk.score}/100</span>
-                    <span className={`badge badge-${risk.score <= 20 ? 'green' : risk.score <= 50 ? 'orange' : 'red'}`}>
-                      {risk.level}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-600 mb-2">{risk.description}</p>
-                <div className="progress-bar-container h-1.5 mb-2">
-                  <div 
-                    className="h-full rounded-full"
-                    style={{ 
-                      width: `${risk.score}%`,
-                      background: `linear-gradient(90deg, ${risk.color}, ${risk.color}CC)`
-                    }}
-                  />
-                </div>
-                <div className="space-y-1">
-                  {risk.checks.map((check, j) => (
-                    <div key={j} className="flex items-center justify-between text-xs">
-                      <span className="text-gray-500">{check.name}</span>
-                      <span className={`font-semibold ${
-                        check.status === 'pass' || check.status === 'no-interaction' || check.status === '0'
-                          ? 'text-emerald-600'
-                          : check.status.includes('found') || check.status.includes('detected')
-                          ? 'text-orange-600'
-                          : 'text-gray-700'
-                      }`}>
-                        {check.status}
-                      </span>
+        <div className="flex-1 overflow-auto">
+          <div className="grid grid-cols-2 gap-3">
+            {riskCategories.map((risk, i) => {
+              const Icon = risk.icon;
+              return (
+                <div key={i} className="p-3 bg-gray-50 rounded-xl hover:bg-gray-100/50 transition-colors">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Icon className="w-4 h-4 text-gray-600" />
+                      <span className="text-xs font-bold text-gray-900">{risk.category}</span>
                     </div>
-                  ))}
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-bold ${getScoreColor(risk.score)}`}>{risk.score}</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-600 mb-2">{risk.description}</p>
+                  <div className="progress-bar-container h-1.5 mb-2">
+                    <div 
+                      className="h-full rounded-full"
+                      style={{ 
+                        width: `${risk.score}%`,
+                        background: risk.color
+                      }}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    {risk.checks.map((check, j) => (
+                      <div key={j} className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500 truncate">{check.name}</span>
+                        <span className="font-semibold text-gray-700 ml-2 whitespace-nowrap">
+                          {check.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       )}
 
