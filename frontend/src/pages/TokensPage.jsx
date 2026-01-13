@@ -581,9 +581,16 @@ export default function TokensPage() {
               <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
                 <BarChart3 className="w-4 h-4 text-gray-500" />
                 Market Pressure by Cohort
-                <button className="ml-1 p-0.5 hover:bg-gray-100 rounded" title="Who is buying vs selling">
-                  <Info className="w-3.5 h-3.5 text-gray-400" />
-                </button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                      <Info className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                    <p>Shows which cohorts (Retail, Pro, Institutional, Whale) are buying vs selling. Helps identify dominant market participants.</p>
+                  </TooltipContent>
+                </Tooltip>
               </h3>
               
               <div className="space-y-2">
