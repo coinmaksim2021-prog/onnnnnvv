@@ -386,18 +386,39 @@ const HistoricalEffect = ({ historicalEffect, entityName }) => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-4 mb-4">
-        <div className="p-4 bg-gray-50 rounded-xl text-center">
-          <div className="text-2xl font-bold text-gray-900">{historicalEffect.marketUpPct}%</div>
-          <div className="text-xs text-gray-500 mt-1">Market moved up after</div>
-        </div>
-        <div className="p-4 bg-gray-50 rounded-xl text-center">
-          <div className="text-2xl font-bold text-gray-900">{historicalEffect.avgLagDays}d</div>
-          <div className="text-xs text-gray-500 mt-1">Avg lag to market reaction</div>
-        </div>
-        <div className="p-4 bg-gray-50 rounded-xl text-center">
-          <div className="text-2xl font-bold text-gray-900">{historicalEffect.medianMove}</div>
-          <div className="text-xs text-gray-500 mt-1">Median price move</div>
-        </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="p-4 bg-gray-50 rounded-xl text-center cursor-help hover:bg-gray-100 transition-colors">
+              <div className="text-2xl font-bold text-gray-900">{historicalEffect.marketUpPct}%</div>
+              <div className="text-xs text-gray-500 mt-1">Market moved up after</div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">In {historicalEffect.marketUpPct}% of cases, market showed positive movement after this condition. Remaining {100 - historicalEffect.marketUpPct}% were flat or negative.</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="p-4 bg-gray-50 rounded-xl text-center cursor-help hover:bg-gray-100 transition-colors">
+              <div className="text-2xl font-bold text-gray-900">{historicalEffect.avgLagDays}d</div>
+              <div className="text-xs text-gray-500 mt-1">Avg lag to market reaction</div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">Average time between entity action and observable market reaction. Use this for entry timing.</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="p-4 bg-gray-50 rounded-xl text-center cursor-help hover:bg-gray-100 transition-colors">
+              <div className="text-2xl font-bold text-gray-900">{historicalEffect.medianMove}</div>
+              <div className="text-xs text-gray-500 mt-1">Median price move</div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">Median (not average) price change observed. Median is more reliable as it excludes outliers.</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* Best Response */}
