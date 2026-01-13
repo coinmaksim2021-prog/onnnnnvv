@@ -318,110 +318,193 @@ export default function WalletsPage() {
             </div>
           </div>
 
-          {/* Token Alignment & Strategy Suitability — НОВЫЕ БЛОКИ */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-            {/* Token Alignment */}
-            <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-                <Activity className="w-4 h-4 text-gray-500" />
-                Token Alignment
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
-                      <Info className="w-3.5 h-3.5 text-gray-400" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-gray-900 text-white max-w-xs">
-                    <p>Shows overlap between wallet holdings and tokens with confirmed bullish/supportive structures from Tokens page.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </h3>
-              
-              <div className="space-y-2 mb-3">
-                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-gray-700" />
-                    <span className="text-sm font-medium text-gray-900">ETH</span>
-                    <span className="text-xs text-gray-500">Accumulation</span>
-                  </div>
-                  <span className="text-xs font-semibold text-gray-700">Aligned</span>
+          {/* Core Metrics - LEVEL 3 */}
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Core Metrics</h2>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+              {/* PnL Summary */}
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-900">PnL Summary</h3>
+                  <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">FACT</span>
                 </div>
-                
-                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-gray-700" />
-                    <span className="text-sm font-medium text-gray-900">ARB</span>
-                    <span className="text-xs text-gray-500">Supportive</span>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Total PnL</span>
+                    <span className="font-bold text-gray-900">+$549K</span>
                   </div>
-                  <span className="text-xs font-semibold text-gray-700">Aligned</span>
-                </div>
-                
-                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-gray-700" />
-                    <span className="text-sm font-medium text-gray-900">OP</span>
-                    <span className="text-xs text-gray-500">Bullish</span>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Win Rate</span>
+                    <span className="font-semibold text-gray-900">66.8%</span>
                   </div>
-                  <span className="text-xs font-semibold text-gray-700">Aligned</span>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Profit Factor</span>
+                    <span className="font-semibold text-gray-900">3.34x</span>
+                  </div>
                 </div>
               </div>
-              
-              <div className="pt-3 border-t border-gray-100">
-                <div className="text-xs text-gray-600">
-                  <span className="font-semibold">Verdict:</span> This wallet is accumulating tokens with confirmed bullish structure (ETH, ARB, OP)
-                </div>
-              </div>
-            </div>
 
-            {/* Strategy Suitability */}
-            <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-                <Zap className="w-4 h-4 text-gray-500" />
-                Strategy Suitability
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
-                      <Info className="w-3.5 h-3.5 text-gray-400" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-gray-900 text-white max-w-xs">
-                    <p>Shows which strategies from Tokens page align with this wallet's behavior and holdings.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </h3>
-              
-              <div className="space-y-2 mb-3">
-                <div className="p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-900">Smart Money Follow</span>
-                    <Check className="w-4 h-4 text-gray-700" />
-                  </div>
-                  <div className="text-xs text-gray-600">
-                    <span className="font-semibold">Highly aligned</span> — Wallet shows consistent accumulation patterns
-                  </div>
+              {/* Risk Score */}
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-900">Risk Score</h3>
+                  <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">FACT</span>
                 </div>
-                
-                <div className="p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-900">Narrative Rider</span>
-                    <AlertTriangle className="w-4 h-4 text-gray-500" />
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <div className="text-4xl font-bold text-gray-900">12<span className="text-xl text-gray-400">/100</span></div>
+                    <div className="text-xs text-gray-600 mt-1">Low Risk</div>
                   </div>
-                  <div className="text-xs text-gray-600">
-                    <span className="font-semibold">Partial alignment</span> — Some late entries detected
+                  <div className="text-right text-xs text-gray-600">
+                    <div className="mb-1">✓ No sanctions</div>
+                    <div className="mb-1">✓ No mixers</div>
+                    <div>⚠ 2 risky approvals</div>
                   </div>
                 </div>
               </div>
-              
-              <div className="pt-3 border-t border-gray-100">
-                <div className="text-xs text-gray-600">
-                  <span className="font-semibold">Recommendation:</span> Best suited for Smart Money Follow strategy
+
+              {/* Dominant Strategy */}
+              <div className="bg-white border border-gray-200 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-gray-900">Dominant Strategy</h3>
+                  <span className="px-2 py-1 bg-blue-100 rounded-lg text-xs font-medium text-blue-700">MODEL</span>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-900 mb-1">Smart Money Trader</div>
+                  <div className="text-xs text-gray-600 mb-2">87% confidence based on 468 trades</div>
+                  <div className="flex items-center gap-1 flex-wrap">
+                    <span className="px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-700">DEX Heavy</span>
+                    <span className="px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-700">Alpha Hunter</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-      {/* Wallet Analytics Components */}
-      <div className="pb-8">
+          {/* Advanced Details - EXPANDABLE */}
+          <div className="mb-6">
+            <button
+              onClick={() => setShowAdvancedDetails(!showAdvancedDetails)}
+              className="w-full flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <h2 className="text-sm font-semibold text-gray-900">Advanced Analysis</h2>
+                <span className="px-2 py-1 bg-blue-100 rounded-lg text-xs font-medium text-blue-700">MODEL + INTERPRETATION</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                {showAdvancedDetails ? 'Hide' : 'Show'}
+                {showAdvancedDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </div>
+            </button>
+
+            {showAdvancedDetails && (
+              <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* Token Alignment */}
+                <div className="bg-white border border-gray-200 rounded-xl p-4">
+                  <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                    <Activity className="w-4 h-4 text-gray-500" />
+                    Token Alignment
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                          <Info className="w-3.5 h-3.5 text-gray-400" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                        <p>Shows overlap between wallet holdings and tokens with confirmed bullish/supportive structures from Tokens page.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </h3>
+                  
+                  <div className="space-y-2 mb-3">
+                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-gray-700" />
+                        <span className="text-sm font-medium text-gray-900">ETH</span>
+                        <span className="text-xs text-gray-500">Accumulation</span>
+                      </div>
+                      <span className="text-xs font-semibold text-gray-700">Aligned</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-gray-700" />
+                        <span className="text-sm font-medium text-gray-900">ARB</span>
+                        <span className="text-xs text-gray-500">Supportive</span>
+                      </div>
+                      <span className="text-xs font-semibold text-gray-700">Aligned</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-gray-700" />
+                        <span className="text-sm font-medium text-gray-900">OP</span>
+                        <span className="text-xs text-gray-500">Bullish</span>
+                      </div>
+                      <span className="text-xs font-semibold text-gray-700">Aligned</span>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-3 border-t border-gray-100">
+                    <div className="text-xs text-gray-600">
+                      <span className="font-semibold">Model insight:</span> This wallet is accumulating tokens with confirmed bullish structure
+                    </div>
+                  </div>
+                </div>
+
+                {/* Strategy Suitability */}
+                <div className="bg-white border border-gray-200 rounded-xl p-4">
+                  <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                    <Zap className="w-4 h-4 text-gray-500" />
+                    Strategy Suitability
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                          <Info className="w-3.5 h-3.5 text-gray-400" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                        <p>Shows which strategies from Tokens page align with this wallet's behavior and holdings.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </h3>
+                  
+                  <div className="space-y-2 mb-3">
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-gray-900">Smart Money Follow</span>
+                        <Check className="w-4 h-4 text-gray-700" />
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        <span className="font-semibold">Highly aligned</span> — Consistent accumulation patterns
+                      </div>
+                    </div>
+                    
+                    <div className="p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-sm font-medium text-gray-900">Narrative Rider</span>
+                        <AlertTriangle className="w-4 h-4 text-gray-500" />
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        <span className="font-semibold">Partial alignment</span> — Some late entries detected
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-3 border-t border-gray-100">
+                    <div className="text-xs text-gray-600">
+                      <span className="font-semibold">Recommendation:</span> Best suited for Smart Money Follow strategy
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Detailed Analytics - COLLAPSED BY DEFAULT */}
+          <div className="mb-6">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Detailed Analytics</h2>
         {/* Row 1: PnL Engine */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           <div>
