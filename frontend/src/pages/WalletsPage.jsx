@@ -541,7 +541,8 @@ export default function WalletsPage() {
             </div>
           </div>
         )}
-      </TooltipProvider>
-    </div>
+        </div>
+      </div>
+    </TooltipProvider>
   );
 }
