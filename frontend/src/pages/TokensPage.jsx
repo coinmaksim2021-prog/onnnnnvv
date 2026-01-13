@@ -640,9 +640,16 @@ export default function TokensPage() {
               <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-2">
                 <Wallet className="w-4 h-4 text-gray-500" />
                 Trade Size Breakdown
-                <button className="ml-1 p-0.5 hover:bg-gray-100 rounded" title="Click to see details">
-                  <Info className="w-3.5 h-3.5 text-gray-400" />
-                </button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                      <Info className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                    <p>Breakdown of trading activity by trade size. Click any cohort to see detailed flow data, entities, and average hold time.</p>
+                  </TooltipContent>
+                </Tooltip>
               </h3>
               
               {/* Dominant Cohort */}
