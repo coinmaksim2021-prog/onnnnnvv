@@ -1,0 +1,617 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { 
+  Search, ChevronDown, ChevronUp, Clock, Users, Wallet, ArrowRightLeft, 
+  BarChart3, Check, AlertTriangle, Zap, TrendingUp, TrendingDown, Bell, 
+  Building, ExternalLink, Activity, ArrowUp, ArrowDown, Eye, X, Info
+} from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import Header from '../components/Header';
+
+// Mock tokens data
+const topTokens = [
+  { id: 'btc', symbol: 'BTC', price: 94250, change24h: 2.4 },
+  { id: 'eth', symbol: 'ETH', price: 3342, change24h: 3.8 },
+  { id: 'sol', symbol: 'SOL', price: 178.43, change24h: -1.2 },
+  { id: 'bnb', symbol: 'BNB', price: 612.80, change24h: 1.5 },
+  { id: 'xrp', symbol: 'XRP', price: 2.34, change24h: 5.2 },
+  { id: 'ada', symbol: 'ADA', price: 0.98, change24h: -0.8 },
+];
+
+// Chart data
+const chartData = [
+  { day: '7d', price: 3180, netflow: -120 },
+  { day: '6d', price: 3210, netflow: -80 },
+  { day: '5d', price: 3195, netflow: 45 },
+  { day: '4d', price: 3240, netflow: 120 },
+  { day: '3d', price: 3285, netflow: 180 },
+  { day: '2d', price: 3310, netflow: 220 },
+  { day: '1d', price: 3325, netflow: 260 },
+  { day: 'Now', price: 3342, netflow: 280 },
+];
+
+// Token data
+const tokenData = {
+  eth: {
+    symbol: 'ETH',
+    price: 3342,
+    change: 3.8,
+    marketSignal: { type: 'Bullish', confidence: 57 },
+    intelligence: {
+      structureStatus: 'SUPPORTIVE',
+      marketAlignment: 'CONFIRMED',
+      trend: 'improving', // improving | stable | declining
+      confirmedDays: 6,
+      duration: '1–3 weeks',
+      confidence: 'Medium–High',
+      primaryDrivers: ['Smart money accumulation', 'Whale & institutional buying'],
+      primaryRisk: 'Short-term retail selling',
+    },
+    recentChanges: [
+      { 
+        type: 'up', 
+        metric: 'Smart money exposure', 
+        value: '+5.8%', 
+        time: '2d ago',
+        what: 'Smart money wallets increased ETH holdings by 5.8% over the past 48 hours.',
+        why: 'This suggests institutional confidence in current price levels and potential accumulation before expected price movement.'
+      },
+      { 
+        type: 'down', 
+        metric: 'CEX balances', 
+        value: '−2.3%', 
+        time: '3d ago',
+        what: 'Centralized exchange balances decreased by 2.3%, indicating outflows to private wallets.',
+        why: 'Lower CEX balances typically reduce immediate sell pressure and suggest holders are moving to long-term storage.'
+      },
+      { 
+        type: 'up', 
+        metric: 'LP inflow', 
+        value: '+$6.3M', 
+        time: '4d ago',
+        what: 'Liquidity providers added $6.3M to DEX pools.',
+        why: 'Increased LP activity indicates growing confidence in trading volume and fee generation potential.'
+      },
+      { 
+        type: 'up', 
+        metric: 'Bridge volume', 
+        value: '+$3.6M', 
+        time: '5d ago',
+        what: 'Cross-chain bridge activity increased with $3.6M flowing into Ethereum.',
+        why: 'Capital flowing into the network from other chains suggests relative strength and demand.'
+      },
+    ],
+    holders: {
+      strongHands: 53.5,
+      trend: 'Increasing',
+      composition: [
+        { type: 'CEX', pct: 35.2, change: -2.3 },
+        { type: 'Smart Money', pct: 18.7, change: 5.8 },
+        { type: 'Funds', pct: 12.4, change: 1.2 },
+        { type: 'Retail', pct: 22.1, change: -3.1 },
+      ],
+      interpretation: 'Smart money & funds increased exposure while CEX balances declined.',
+    },
+    supplyFlow: {
+      mintBurn: -3847,
+      lpFlow: 6300000,
+      bridgeFlow: 3600000,
+      netEffect: 'Supply pressure decreasing due to LP & bridge inflows.',
+    },
+    pressure: {
+      buyPct: 50.8,
+      netFlow: 280,
+      interpretation: 'Buy pressure driven by Pro, Institutional and Whale segments.',
+    },
+    tradeSize: [
+      { 
+        size: 'Retail', range: '<$1K', action: 'Sell', link: '/wallets?filter=retail',
+        entities: 'Multiple retail wallets',
+        netFlow: '-$2.1M',
+        avgHold: '3d'
+      },
+      { 
+        size: 'Active', range: '$1K-10K', action: 'Neutral', link: '/wallets?filter=active',
+        entities: '~1,200 active traders',
+        netFlow: '+$0.8M',
+        avgHold: '7d'
+      },
+      { 
+        size: 'Pro', range: '$10K-100K', action: 'Buy', link: '/entities?filter=desks',
+        entities: '45 trading desks',
+        netFlow: '+$12M',
+        avgHold: '12d'
+      },
+      { 
+        size: 'Inst.', range: '$100K-1M', action: 'Buy', link: '/entities?filter=funds',
+        entities: '8 funds accumulating',
+        netFlow: '+$34M',
+        avgHold: '21d'
+      },
+      { 
+        size: 'Whale', range: '>$1M', action: 'Buy', link: '/entities?filter=whales',
+        entities: '3 entities accumulating',
+        netFlow: '+$48M',
+        avgHold: '14d'
+      },
+    ],
+    suggestedStrategies: {
+      reasons: ['Smart money accumulation', 'Mid-term structure', 'Whale support'],
+      strategies: [
+        { name: 'Smart Money Follow', why: 'Aligned with institutional accumulation pattern' },
+        { name: 'Narrative Rider', why: 'Best suited for mid-term structure confirmation' },
+      ],
+    }
+  }
+};
+
+export default function TokensPage() {
+  const [selectedToken, setSelectedToken] = useState('eth');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showCorrelation, setShowCorrelation] = useState(false);
+  const [selectedChange, setSelectedChange] = useState(null);
+  const [selectedTrade, setSelectedTrade] = useState(null);
+  
+  const token = tokenData[selectedToken] || tokenData.eth;
+  const filteredTokens = topTokens.filter(t => 
+    t.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const getTrendIcon = (trend) => {
+    if (trend === 'improving') return <TrendingUp className="w-3.5 h-3.5" />;
+    if (trend === 'declining') return <TrendingDown className="w-3.5 h-3.5" />;
+    return <span className="text-xs">↔</span>;
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Header />
+      
+      {/* Token Selector */}
+      <div className="border-b border-gray-100 bg-gray-50/50">
+        <div className="px-4 py-2">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 pr-3 py-1.5 text-sm bg-white border border-gray-200 rounded-lg w-32 focus:outline-none focus:border-gray-400"
+              />
+            </div>
+            <div className="flex items-center gap-1 overflow-x-auto">
+              {filteredTokens.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setSelectedToken(t.id)}
+                  className={`px-3 py-1.5 text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
+                    selectedToken === t.id ? 'bg-gray-900 text-white' : 'text-gray-600 hover:bg-gray-100'
+                  }`}
+                >
+                  {t.symbol}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Token Header */}
+      <div className="px-4 py-3 border-b border-gray-100">
+        <div className="flex items-center gap-4 text-sm mb-1">
+          <span className="text-lg font-bold text-gray-900">{token.symbol}</span>
+          <span className="text-gray-300">|</span>
+          <span className="font-semibold text-gray-700">${token.price.toLocaleString()}</span>
+          <span className="text-gray-500">{token.change >= 0 ? '+' : ''}{token.change}%</span>
+        </div>
+        <div className="text-xs text-gray-500">
+          Market Signal: <span className="font-semibold text-gray-700">{token.marketSignal.type} ({token.marketSignal.confidence}%)</span>
+          <span className="mx-2">→</span>
+          <span className="font-medium text-gray-700">Structure {token.intelligence.marketAlignment.toLowerCase()}</span>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="px-4 py-3">
+        
+        {/* 🔥 TOKEN INTELLIGENCE — HERO */}
+        <div className="bg-gray-900 text-white rounded-2xl p-5 mb-4">
+          <div className="flex items-start justify-between mb-3">
+            <div>
+              <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Token Intelligence</div>
+              <div className="flex items-center gap-3">
+                <span className="text-2xl font-bold">{token.intelligence.structureStatus}</span>
+                <span className="px-2 py-1 bg-white/10 rounded-lg text-xs font-medium">
+                  {token.intelligence.marketAlignment}
+                </span>
+                {/* Micro-indicator */}
+                <span className="flex items-center gap-1 px-2 py-1 bg-white/5 rounded-lg text-xs text-gray-300">
+                  {getTrendIcon(token.intelligence.trend)}
+                  {token.intelligence.trend}
+                </span>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs text-gray-400">Confidence</div>
+              <div className="text-lg font-bold">{token.intelligence.confidence}</div>
+            </div>
+          </div>
+          
+          {/* Divider with timeline hint */}
+          <div className="flex items-center gap-3 py-2 mb-3 border-y border-white/10">
+            <Clock className="w-3.5 h-3.5 text-gray-500" />
+            <span className="text-xs text-gray-400">
+              Confirmed for <span className="text-white font-medium">{token.intelligence.confirmedDays} days</span>
+              <span className="mx-2">•</span>
+              Expected duration: <span className="text-white font-medium">{token.intelligence.duration}</span>
+            </span>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <div className="text-xs text-gray-400 mb-2">Primary Drivers</div>
+              {token.intelligence.primaryDrivers.map((driver, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm mb-1">
+                  <Check className="w-3.5 h-3.5 text-gray-400" />
+                  <span>{driver}</span>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div className="text-xs text-gray-400 mb-2">Primary Risk</div>
+              <div className="flex items-center gap-2 text-sm">
+                <AlertTriangle className="w-3.5 h-3.5 text-gray-500" />
+                <span className="text-gray-300">{token.intelligence.primaryRisk}</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* CTAs */}
+          <div className="flex items-center gap-2 pt-3 border-t border-white/10">
+            <button className="flex items-center gap-2 px-3 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors">
+              <Bell className="w-4 h-4" />
+              Create Alert
+            </button>
+            <Link to="/entities" className="flex items-center gap-2 px-3 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+              <Building className="w-4 h-4" />
+              View Entities
+            </Link>
+            <Link to="/alerts" className="flex items-center gap-2 px-3 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+              <Eye className="w-4 h-4" />
+              Track Structure
+            </Link>
+          </div>
+        </div>
+
+        {/* Two Columns */}
+        <div className="flex gap-3">
+          
+          {/* LEFT COLUMN (60%) */}
+          <div className="w-[60%] space-y-3">
+            
+            {/* Net Flow vs Price Chart */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-gray-500" />
+                  Net Flow vs Price (7D)
+                </h3>
+                <div className="text-xs text-gray-500">Correlation: 0.87</div>
+              </div>
+              {/* Explanation line */}
+              <p className="text-xs text-gray-500 mb-3">
+                Shows whether on-chain capital movement supports price action.
+              </p>
+              
+              <div className="h-28">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData}>
+                    <XAxis dataKey="day" tick={{ fontSize: 10 }} stroke="#9CA3AF" />
+                    <YAxis yAxisId="left" hide />
+                    <YAxis yAxisId="right" orientation="right" hide />
+                    <Tooltip 
+                      contentStyle={{ background: '#1F2937', border: 'none', borderRadius: '8px', fontSize: '12px', color: 'white' }}
+                    />
+                    <Line yAxisId="left" type="monotone" dataKey="price" stroke="#374151" strokeWidth={2} dot={false} />
+                    <Line yAxisId="right" type="monotone" dataKey="netflow" stroke="#9CA3AF" strokeWidth={2} dot={false} strokeDasharray="4 4" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex items-center justify-center gap-4 mt-2 text-xs text-gray-500">
+                <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-gray-700"></span> Price</span>
+                <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-gray-400"></span> Net Flow</span>
+              </div>
+            </div>
+            
+            {/* Holder Composition */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-gray-500" />
+                  Holder Composition
+                </h3>
+                <Link to="/entities" className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1">
+                  View Activity <ExternalLink className="w-3 h-3" />
+                </Link>
+              </div>
+              
+              <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg mb-2">
+                <div>
+                  <div className="text-xs text-gray-500">Strong Hands</div>
+                  <div className="text-lg font-bold text-gray-900">{token.holders.strongHands}%</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-gray-500">Trend</div>
+                  <div className="text-sm font-semibold text-gray-700">{token.holders.trend}</div>
+                </div>
+              </div>
+              
+              <div className="space-y-0.5 mb-2">
+                {token.holders.composition.map((item, i) => (
+                  <div key={i} className="flex items-center justify-between py-1.5 text-sm">
+                    <span className="text-gray-600">{item.type}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="font-semibold text-gray-900">{item.pct}%</span>
+                      <span className="text-xs text-gray-400 w-10 text-right">{item.change >= 0 ? '+' : ''}{item.change}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="pt-2 border-t border-gray-100 text-xs text-gray-600">
+                {token.holders.interpretation}
+              </div>
+            </div>
+
+            {/* Supply Flow */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-2">
+                <ArrowRightLeft className="w-4 h-4 text-gray-500" />
+                Supply Flow
+              </h3>
+              
+              <div className="grid grid-cols-3 gap-2 mb-2">
+                <div className="p-2 bg-gray-50 rounded-lg text-center">
+                  <div className="text-xs text-gray-500">Mint/Burn</div>
+                  <div className="text-sm font-bold text-gray-900">{token.supplyFlow.mintBurn.toLocaleString()}</div>
+                </div>
+                <div className="p-2 bg-gray-50 rounded-lg text-center">
+                  <div className="text-xs text-gray-500">LP Flow</div>
+                  <div className="text-sm font-bold text-gray-900">+${(token.supplyFlow.lpFlow / 1000000).toFixed(1)}M</div>
+                </div>
+                <div className="p-2 bg-gray-50 rounded-lg text-center">
+                  <div className="text-xs text-gray-500">Bridge</div>
+                  <div className="text-sm font-bold text-gray-900">+${(token.supplyFlow.bridgeFlow / 1000000).toFixed(1)}M</div>
+                </div>
+              </div>
+              
+              <div className="text-xs text-gray-600">{token.supplyFlow.netEffect}</div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN (40%) */}
+          <div className="w-[40%] space-y-3">
+            
+            {/* Recent Changes — CLICKABLE */}
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                <Clock className="w-4 h-4 text-gray-500" />
+                Recent Changes (7D)
+              </h3>
+              
+              <div className="space-y-1">
+                {token.recentChanges.map((change, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedChange(change)}
+                    className="w-full flex items-center gap-2 p-2 -mx-2 rounded-lg hover:bg-white transition-colors text-left group"
+                  >
+                    {change.type === 'up' ? (
+                      <ArrowUp className="w-3.5 h-3.5 text-gray-600" />
+                    ) : (
+                      <ArrowDown className="w-3.5 h-3.5 text-gray-400" />
+                    )}
+                    <span className="text-sm text-gray-700 flex-1">{change.metric}</span>
+                    <span className="text-sm font-semibold text-gray-900">{change.value}</span>
+                    <Info className="w-3 h-3 text-gray-300 opacity-0 group-hover:opacity-100" />
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Buy / Sell Pressure */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-2">
+                <BarChart3 className="w-4 h-4 text-gray-500" />
+                Buy / Sell Pressure
+              </h3>
+              
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-2xl font-bold text-gray-900">{token.pressure.buyPct}%</div>
+                <div className="text-sm text-gray-500">Net: +{token.pressure.netFlow}</div>
+              </div>
+              
+              <div className="h-2 bg-gray-200 rounded-full overflow-hidden flex mb-2">
+                <div className="h-full bg-gray-700 rounded-l-full" style={{ width: `${token.pressure.buyPct}%` }} />
+              </div>
+              
+              <div className="text-xs text-gray-600">{token.pressure.interpretation}</div>
+            </div>
+
+            {/* Trade Size Breakdown — ENHANCED CLICK */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-2">
+                <Wallet className="w-4 h-4 text-gray-500" />
+                Trade Size Breakdown
+              </h3>
+              
+              <div className="space-y-1">
+                {token.tradeSize.map((item, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedTrade(item)}
+                    className="w-full flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition-colors group text-left"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700">{item.size}</span>
+                      <span className="text-xs text-gray-400">{item.range}</span>
+                      <ExternalLink className="w-3 h-3 text-gray-300 opacity-0 group-hover:opacity-100" />
+                    </div>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                      item.action === 'Buy' ? 'bg-gray-100 text-gray-800' :
+                      item.action === 'Sell' ? 'bg-gray-100 text-gray-500' :
+                      'bg-gray-50 text-gray-400'
+                    }`}>
+                      {item.action}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Suggested Strategies — WITH WHY */}
+            <div className="bg-gray-900 text-white rounded-xl p-4">
+              <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
+                <Zap className="w-4 h-4 text-gray-400" />
+                Suggested Strategies
+              </h3>
+              
+              <div className="text-xs text-gray-400 mb-3">
+                Based on: {token.suggestedStrategies.reasons.join(' • ')}
+              </div>
+              
+              <div className="space-y-2">
+                {token.suggestedStrategies.strategies.map((strategy, i) => (
+                  <div key={i} className="p-2 bg-white/10 rounded-lg">
+                    <div className="flex items-center gap-2 mb-1">
+                      <TrendingUp className="w-4 h-4 text-gray-400" />
+                      <span className="text-sm font-medium">{strategy.name}</span>
+                    </div>
+                    <div className="text-xs text-gray-400 pl-6">{strategy.why}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Correlation — Collapsible */}
+        <div className="mt-3">
+          <button
+            onClick={() => setShowCorrelation(!showCorrelation)}
+            className="w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 transition-colors"
+          >
+            <span className="text-sm font-semibold text-gray-700">OI & Volume Correlations</span>
+            {showCorrelation ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+          </button>
+          
+          {showCorrelation && (
+            <div className="mt-2 p-4 bg-white border border-gray-200 rounded-xl">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="text-xs text-gray-500 mb-1">OI/Netflow</div>
+                  <div className="text-lg font-bold text-gray-900">0.87</div>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="text-xs text-gray-500 mb-1">OI/Price</div>
+                  <div className="text-lg font-bold text-gray-900">0.64</div>
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="text-xs text-gray-500 mb-1">Volume/Price</div>
+                  <div className="text-lg font-bold text-gray-900">0.72</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Recent Change Modal */}
+      {selectedChange && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setSelectedChange(null)}>
+          <div className="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                {selectedChange.type === 'up' ? (
+                  <ArrowUp className="w-5 h-5 text-gray-700" />
+                ) : (
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                )}
+                <h3 className="text-lg font-bold text-gray-900">{selectedChange.metric}</h3>
+              </div>
+              <button onClick={() => setSelectedChange(null)} className="p-1 hover:bg-gray-100 rounded-lg">
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">What changed?</div>
+                <p className="text-sm text-gray-700">{selectedChange.what}</p>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Why it matters</div>
+                <p className="text-sm text-gray-700">{selectedChange.why}</p>
+              </div>
+              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <span className="text-xs text-gray-500">{selectedChange.time}</span>
+                <span className="text-lg font-bold text-gray-900">{selectedChange.value}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Trade Size Modal */}
+      {selectedTrade && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setSelectedTrade(null)}>
+          <div className="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">{selectedTrade.size}</h3>
+                <p className="text-sm text-gray-500">{selectedTrade.range}</p>
+              </div>
+              <button onClick={() => setSelectedTrade(null)} className="p-1 hover:bg-gray-100 rounded-lg">
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+            
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <span className="text-sm text-gray-600">Entities</span>
+                <span className="text-sm font-semibold text-gray-900">{selectedTrade.entities}</span>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <span className="text-sm text-gray-600">Net Flow</span>
+                <span className="text-sm font-semibold text-gray-900">{selectedTrade.netFlow}</span>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <span className="text-sm text-gray-600">Avg Hold Time</span>
+                <span className="text-sm font-semibold text-gray-900">{selectedTrade.avgHold}</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <span className={`text-sm font-bold px-3 py-1 rounded-lg ${
+                selectedTrade.action === 'Buy' ? 'bg-gray-100 text-gray-800' :
+                selectedTrade.action === 'Sell' ? 'bg-gray-100 text-gray-500' :
+                'bg-gray-50 text-gray-400'
+              }`}>
+                {selectedTrade.action}
+              </span>
+              <Link 
+                to={selectedTrade.link} 
+                onClick={() => setSelectedTrade(null)}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-800"
+              >
+                View All <ExternalLink className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
