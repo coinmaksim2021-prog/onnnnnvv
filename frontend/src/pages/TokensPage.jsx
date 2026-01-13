@@ -238,6 +238,15 @@ export default function TokensPage() {
               <div className="text-lg font-bold">{token.intelligence.confidence}</div>
             </div>
           </div>
+
+          {/* 🔥 MARKET ALIGNMENT — NEW! */}
+          <div className="mb-3 p-3 bg-white/5 rounded-lg border border-white/10">
+            <div className="text-xs text-gray-400 mb-1">Market Alignment</div>
+            <div className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-green-400" />
+              <span className="text-sm font-medium">Fully aligned with current Market regime (Risk-On)</span>
+            </div>
+          </div>
           
           {/* Divider with timeline hint */}
           <div className="flex items-center gap-3 py-2 mb-3 border-y border-white/10">
@@ -272,7 +281,7 @@ export default function TokensPage() {
           <div className="flex items-center gap-2 pt-3 border-t border-white/10">
             <button className="flex items-center gap-2 px-3 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors">
               <Bell className="w-4 h-4" />
-              Create Alert
+              Create Token Alert
             </button>
             <Link to="/entities" className="flex items-center gap-2 px-3 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
               <Building className="w-4 h-4" />
