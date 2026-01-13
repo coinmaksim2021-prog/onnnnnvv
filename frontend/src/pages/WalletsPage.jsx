@@ -485,7 +485,6 @@ export default function WalletsPage() {
           </div>
         </div>
       </div>
-        </div>
 
         {/* Wallet Alert Modal */}
         {showAlertModal && (
