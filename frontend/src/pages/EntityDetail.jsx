@@ -823,14 +823,22 @@ const RecentTransactions = ({ transactions }) => {
   );
 };
 
-// Alert Modal with Market Impact Alert
+// Alert Modal with categorized alerts
 const EntityAlertModal = ({ onClose, entityName }) => {
   const [selectedAlert, setSelectedAlert] = useState(null);
   const [threshold, setThreshold] = useState('0.15');
 
+  // Group alerts by category
+  const alertsByCategory = entityAlertTypes.reduce((acc, alert) => {
+    const cat = alert.category || 'Other';
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(alert);
+    return acc;
+  }, {});
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-white rounded-2xl p-6 max-w-2xl w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+      <div className="bg-white rounded-2xl p-6 max-w-2xl w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Bell className="w-5 h-5 text-gray-700" />
@@ -842,42 +850,91 @@ const EntityAlertModal = ({ onClose, entityName }) => {
         </div>
         
         <p className="text-sm text-gray-600 mb-4">
-          Monitor {entityName} activity that impacts your portfolio or market
+          Monitor {entityName} activity — choose alert type based on what matters to you
         </p>
-        
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          {entityAlertTypes.map((alert) => {
-            const Icon = alert.icon;
-            return (
-              <div 
-                key={alert.id} 
-                onClick={() => setSelectedAlert(alert.id)}
-                className={`p-4 border rounded-xl transition-colors cursor-pointer group ${
-                  selectedAlert === alert.id ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-900'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <div className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
-                    selectedAlert === alert.id ? 'bg-gray-900' : 'bg-gray-100 group-hover:bg-gray-900'
-                  }`}>
-                    <Icon className={`w-4 h-4 ${selectedAlert === alert.id ? 'text-white' : 'text-gray-600 group-hover:text-white'}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-semibold text-gray-900 text-sm">{alert.name}</h4>
-                      {alert.isNew && <span className="px-1.5 py-0.5 bg-teal-500 text-white rounded text-xs">NEW</span>}
-                    </div>
-                    <p className="text-xs text-gray-600 mt-1">{alert.description}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
 
-        {/* Market Impact Alert Configuration */}
-        {selectedAlert === 'market_impact' && (
-          <div className="p-4 bg-gray-50 rounded-xl mb-4">
+        {/* Alerts by Category */}
+        {Object.entries(alertsByCategory).map(([category, alerts]) => (
+          <div key={category} className="mb-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className={`px-2 py-0.5 rounded text-xs font-semibold text-white ${
+                category === 'Structural' ? 'bg-gray-900' :
+                category === 'Impact-based' ? 'bg-teal-500' :
+                category === 'Cross-Entity' ? 'bg-purple-500' : 'bg-gray-500'
+              }`}>
+                {category}
+              </span>
+              <span className="text-xs text-gray-500">
+                {category === 'Structural' && '— Fundamental behavior changes'}
+                {category === 'Impact-based' && '— Exceeds market-moving thresholds'}
+                {category === 'Cross-Entity' && '— Multiple entities align'}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {alerts.map((alert) => {
+                const Icon = alert.icon;
+                return (
+                  <div 
+                    key={alert.id} 
+                    onClick={() => setSelectedAlert(alert.id)}
+                    className={`p-3 border rounded-xl transition-colors cursor-pointer group ${
+                      selectedAlert === alert.id ? 'border-gray-900 bg-gray-50' : 'border-gray-200 hover:border-gray-400'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className={`p-1.5 rounded-lg transition-colors flex-shrink-0 ${
+                        selectedAlert === alert.id ? 'bg-gray-900' : 'bg-gray-100'
+                      }`}>
+                        <Icon className={`w-3.5 h-3.5 ${selectedAlert === alert.id ? 'text-white' : 'text-gray-600'}`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <h4 className="font-semibold text-gray-900 text-xs">{alert.name}</h4>
+                          {alert.isNew && <span className="px-1 py-0.5 bg-teal-500 text-white rounded text-[10px]">NEW</span>}
+                        </div>
+                        <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-1">{alert.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+
+        {/* Configuration for Impact Threshold */}
+        {selectedAlert === 'impact_threshold' && (
+          <div className="p-4 bg-teal-50 border border-teal-200 rounded-xl mb-4">
+            <div className="text-sm font-semibold text-gray-900 mb-3">Configure Impact Threshold</div>
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-sm text-gray-600">Alert when net flow exceeds</span>
+              <input 
+                type="text"
+                value={threshold}
+                onChange={(e) => setThreshold(e.target.value)}
+                className="w-20 px-3 py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-center"
+              />
+              <span className="text-sm text-gray-600">% of daily volume</span>
+            </div>
+          </div>
+        )}
+
+        {/* Configuration for Cross-Entity */}
+        {selectedAlert === 'cross_entity' && (
+          <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl mb-4">
+            <div className="text-sm font-semibold text-gray-900 mb-3">Cross-Entity Signal</div>
+            <div className="space-y-2 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-purple-500" />
+                <span>Alert when 2+ entities align on same token direction</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-purple-500" />
+                <span>Includes Exchange + Smart Money combinations</span>
+              </div>
+            </div>
+          </div>
+        )}
             <div className="text-sm font-semibold text-gray-900 mb-3">Configure Alert Threshold</div>
             <div className="flex items-center gap-3">
               <span className="text-sm text-gray-600">Notify when {entityName} net flow exceeds</span>
