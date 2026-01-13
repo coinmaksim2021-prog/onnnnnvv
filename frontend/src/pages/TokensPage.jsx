@@ -523,29 +523,50 @@ export default function TokensPage() {
               <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-2">
                 <Wallet className="w-4 h-4 text-gray-500" />
                 Trade Size Breakdown
+                <button className="ml-1 p-0.5 hover:bg-gray-100 rounded" title="Click to see details">
+                  <Info className="w-3.5 h-3.5 text-gray-400" />
+                </button>
               </h3>
               
+              {/* Dominant Cohort */}
+              <div className="mb-3 p-2 bg-gray-50 rounded-lg">
+                <div className="text-xs text-gray-500 mb-0.5">Dominant Support:</div>
+                <div className="text-xs font-semibold text-gray-900">Institutional & Whale (net +$82M)</div>
+              </div>
+              
               <div className="space-y-1">
-                {token.tradeSize.map((item, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedTrade(item)}
-                    className="w-full flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition-colors group text-left"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-gray-700">{item.size}</span>
-                      <span className="text-xs text-gray-400">{item.range}</span>
-                      <ExternalLink className="w-3 h-3 text-gray-300 opacity-0 group-hover:opacity-100" />
-                    </div>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
-                      item.action === 'Buy' ? 'bg-gray-100 text-gray-800' :
-                      item.action === 'Sell' ? 'bg-gray-100 text-gray-500' :
-                      'bg-gray-50 text-gray-400'
-                    }`}>
-                      {item.action}
-                    </span>
-                  </button>
-                ))}
+                {token.tradeSize.map((item, i) => {
+                  // Define icons
+                  const cohortIcon = {
+                    'Retail': '🐟',
+                    'Active': '🐠', 
+                    'Pro': '🐬',
+                    'Inst.': '🐋',
+                    'Whale': '🐳'
+                  };
+                  
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedTrade(item)}
+                      className="w-full flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition-colors group text-left"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">{cohortIcon[item.size]}</span>
+                        <span className="text-sm font-medium text-gray-700">{item.size}</span>
+                        <span className="text-xs text-gray-400">{item.range}</span>
+                        <ExternalLink className="w-3 h-3 text-gray-300 opacity-0 group-hover:opacity-100" />
+                      </div>
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                        item.action === 'Buy' ? 'bg-gray-100 text-gray-800' :
+                        item.action === 'Sell' ? 'bg-gray-100 text-gray-500' :
+                        'bg-gray-50 text-gray-400'
+                      }`}>
+                        {item.action}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
