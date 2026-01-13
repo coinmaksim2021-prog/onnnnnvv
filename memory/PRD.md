@@ -58,7 +58,7 @@ Deploy and customize a crypto analytics dashboard from GitHub repository. Focus 
   - Shows Retail/Pro/Inst/Whale actions separately
   - Added interpretation: "Dominant cohort"
 - [x] **TRADE SIZE BREAKDOWN** - Enhanced
-  - Added cohort icons (🐟🐠🐬🐋🐳)
+  - Added cohort icons
   - Added "Dominant Support" summary block
   - Improved tooltip
 - [x] **SUGGESTED STRATEGIES** - Added transparency
@@ -85,22 +85,72 @@ Deploy and customize a crypto analytics dashboard from GitHub repository. Focus 
   - Trade Size Breakdown tooltip
   - Professional UX with proper Radix UI implementation
 
+### January 13, 2026 - Wallets Page Refactoring (P0 COMPLETE ✅)
+- [x] **WALLET INTELLIGENCE** - Top-level decision block
+  - VERDICT (FOLLOW/AVOID) with Decision Score (85/100)
+  - Decision Score formula tooltip (35% Reliability, 25% Low Risk, 25% PnL, 15% Alignment)
+  - High Confidence badge
+- [x] **WALLET STATE INDICATOR** - Current state tracking
+  - Shows "Accumulation → Stable" state with period (last 14d)
+  - Info tooltip explaining calculation basis
+- [x] **WHY FOLLOW THIS WALLET** - Clear reasoning
+  - Profitable over 6 months (+$549K realized)
+  - Low systemic risk (12/100)
+  - Aligned with current market regime
+  - Warning for high frequency trading
+- [x] **WHAT HAPPENS IF YOU FOLLOW** - Impact metrics
+  - Avg Drawdown, Entry Delay, Expected Slippage
+  - Replicability tooltip showing early vs late entry profit
+- [x] **ACTION BUTTONS WITH TOOLTIPS**
+  - Track Wallet: "Adds to Watchlist • Enables Alerts • Shows in Market"
+  - Copy Signals: "Shows theoretical entry points based on wallet actions"
+  - Alert on Changes: "State-based alerts only (not price-based)"
+- [x] **ALERT MODAL** - 4 alert types
+  - Behavioral Shift
+  - Narrative Entry
+  - Risk Threshold
+  - Exit / Degradation Alert (NEW)
+- [x] **EXIT / DEGRADATION ALERT** - Stop following signals
+  - Shift from Accumulation → Distribution
+  - PnL decay over rolling 14 days
+  - Risk score ↑ +20 in 7 days
+  - Sell pressure on top holdings
+- [x] **TOP WALLETS GRID** - Enhanced display
+  - Search by address/label
+  - Filter by type (All, Smart Money, Whale, Fund)
+  - "Why featured?" explanation for each wallet
+- [x] **CORE METRICS** - FACT vs MODEL badges
+  - PnL Summary (FACT)
+  - Risk Score (FACT)
+  - Dominant Strategy (MODEL)
+- [x] **ADVANCED ANALYSIS** - Collapsible section
+  - Token Alignment with interpretation
+  - Strategy Suitability matching
+- [x] **DETAILED ANALYTICS** - Collapsible sections
+  - Behavior Fingerprint (unified horizontal layout)
+  - Risk Deep Dive (Advanced Risk Flags)
+
 ## Prioritized Backlog
 
 ### P0 - Critical
 - None currently
 
 ### P1 - High Priority
+- **Backend Implementation** - Create backend to replace mocked frontend data:
+  - Wallet Snapshot and Wallet State calculation
+  - SmartMoneyScore formula
+  - Risk scoring and activity classification
+- **Track Wallet Functionality** - Connect to real watchlist feature
 - Remove emojis from remaining components:
   - DecisionEngine.jsx
   - DecisionEngineCompact.jsx
   - SmartMoneyRadar.jsx
   - Portfolio.jsx
   - TokenDetail.jsx
-  - TokensPage.jsx
-  - WalletsPage.jsx
 
 ### P2 - Medium Priority
+- **Wallet Comparison Mode** - Side-by-side wallet comparison
+- **Confidence Decay** - UI element showing score decay over time
 - Structural separation of three product axes:
   1. Flow & Anomalies
   2. Smart Money Graph
@@ -117,8 +167,14 @@ Deploy and customize a crypto analytics dashboard from GitHub repository. Focus 
 - UI Components: Shadcn/UI
 
 ## Key Files
+- `/app/frontend/src/pages/WalletsPage.jsx` - Wallets page with decision tools
+- `/app/frontend/src/pages/TokensPage.jsx` - Tokens validation layer
 - `/app/frontend/src/pages/DashboardPage.jsx` - Main layout
+- `/app/frontend/src/components/BehaviorFingerprint.jsx` - Wallet behavior analysis
+- `/app/frontend/src/components/AdvancedRiskFlags.jsx` - Risk deep dive
 - `/app/frontend/src/components/AlertModal.jsx` - Alert creation modal
 - `/app/frontend/src/components/MarketDislocationCard.jsx` - Edge detection card
-- `/app/frontend/src/components/NarrativesModal.jsx` - Narratives explorer
-- `/app/frontend/src/components/SmartMoneyModal.jsx` - Smart money explorer
+
+## Notes
+- **ALL DATA IS MOCKED** - Frontend uses hardcoded mock data
+- User prefers Russian language for communication
