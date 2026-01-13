@@ -81,14 +81,35 @@ const topWallets = [
   },
 ];
 
-// Wallet Intelligence data
+// Wallet Intelligence data with Decision Score
 const walletIntelligence = {
   classification: 'Smart Money',
   confidence: 87,
   currentMode: 'Accumulation',
   marketAlignment: 'Risk-On',
   tokenOverlap: ['ETH', 'AI', 'L2'],
-  reliabilityScore: 82
+  reliabilityScore: 82,
+  // Decision Score components
+  riskScore: 12,
+  pnlConsistency: 78, // winrate * profit factor normalization
+  marketAlignmentScore: 100, // Risk-On = 100
+  // Calculated Decision Score
+  decisionScore: Math.round(
+    (0.35 * 82) + // Reliability
+    (0.25 * (100 - 12)) + // Inverse Risk
+    (0.25 * 78) + // PnL Consistency
+    (0.15 * 100) // Market Alignment
+  ),
+  verdict: 'FOLLOW' // Based on score > 75
+};
+
+// What happens if you follow
+const followingImpact = {
+  avgDrawdown: '8.2%',
+  avgEntryDelay: '2.4 hours',
+  expectedSlippage: '0.3%',
+  confidencePeriod: 'Last 90 days',
+  tradesAnalyzed: 468
 };
 
 // Wallet Alerts configuration
