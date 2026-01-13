@@ -37,6 +37,24 @@ const getEntityIntelligence = (entityId) => {
         { positive: true, text: 'No abnormal outflow spikes detected' },
         { positive: false, text: 'Minor BTC distribution detected (-$56M)' }
       ],
+      // Action Panel - What should I do?
+      actionBias: {
+        primary: 'Accumulate ETH/SOL',
+        actions: [
+          { type: 'positive', text: 'Consider ETH accumulation (aligned with entity)' },
+          { type: 'negative', text: 'Reduce BTC exposure (entity distributing)' },
+          { type: 'neutral', text: 'Monitor ARB for confirmation (medium confidence)' }
+        ],
+        timing: '24-48h window optimal',
+        riskNote: 'Risk-adjusted based on entity flow, historical impact, market regime'
+      },
+      // Cross-Entity Context
+      alignedEntities: [
+        { name: 'Kraken', action: 'Net inflow', token: 'ETH', confidence: 74 },
+        { name: 'a16z Crypto', action: 'Accumulating', token: 'ETH', confidence: 82 },
+        { name: 'Grayscale', action: 'Adding', token: 'ETH', confidence: 88 }
+      ],
+      confidenceBoost: 12,
       // Token Impact Matrix
       tokenImpact: [
         { token: 'ETH', direction: 'accumulation', strength: 'High', confidence: 82, impactScore: 8.4 },
@@ -74,6 +92,20 @@ const getEntityIntelligence = (entityId) => {
         { positive: true, text: 'Institutional custody remains strong' },
         { positive: false, text: 'Rotation between BTC and altcoins' }
       ],
+      actionBias: {
+        primary: 'Wait for confirmation',
+        actions: [
+          { type: 'negative', text: 'Reduce BTC exposure (distribution signal)' },
+          { type: 'neutral', text: 'Hold ETH position (mixed signals)' },
+          { type: 'neutral', text: 'Wait 24-48h for direction clarity' }
+        ],
+        timing: 'Wait for confirmation',
+        riskNote: 'Lower confidence — avoid aggressive positioning'
+      },
+      alignedEntities: [
+        { name: 'Jump Trading', action: 'Distributing', token: 'BTC', confidence: 71 }
+      ],
+      confidenceBoost: -5,
       tokenImpact: [
         { token: 'ETH', direction: 'neutral', strength: 'Medium', confidence: 58, impactScore: 4.2 },
         { token: 'BTC', direction: 'distribution', strength: 'Medium', confidence: 65, impactScore: 5.8 },
