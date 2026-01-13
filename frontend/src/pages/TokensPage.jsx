@@ -358,7 +358,10 @@ export default function TokensPage() {
           
           {/* CTAs */}
           <div className="flex items-center gap-2 pt-3 border-t border-white/10">
-            <button className="flex items-center gap-2 px-3 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors">
+            <button 
+              onClick={() => setShowAlertModal(true)}
+              className="flex items-center gap-2 px-3 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors"
+            >
               <Bell className="w-4 h-4" />
               Create Token Alert
             </button>
