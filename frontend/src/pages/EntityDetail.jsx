@@ -571,20 +571,43 @@ const RecentTransactions = ({ transactions }) => {
   return (
     <GlassCard className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Recent Transactions</h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Recent Transactions</h3>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="p-0.5 hover:bg-gray-100 rounded">
+                <Info className="w-3 h-3 text-gray-400" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+              <p className="text-xs">Latest transactions across entity addresses. Filter by significance to focus on market-moving activity.</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
         <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-0.5">
           {txFilterTypes.map(filter => (
-            <button
-              key={filter.id}
-              onClick={() => setTxFilter(filter.id)}
-              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                txFilter === filter.id 
-                  ? 'bg-gray-900 text-white' 
-                  : 'text-gray-600 hover:bg-white'
-              }`}
-            >
-              {filter.label}
-            </button>
+            <Tooltip key={filter.id}>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => setTxFilter(filter.id)}
+                  className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                    txFilter === filter.id 
+                      ? 'bg-gray-900 text-white' 
+                      : 'text-gray-600 hover:bg-white'
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+                <p className="text-xs">
+                  {filter.id === 'all' && 'Show all transactions'}
+                  {filter.id === 'market_moving' && 'Only transactions > X% of token daily volume'}
+                  {filter.id === 'first_entry' && 'Only first-time positions in new tokens'}
+                  {filter.id === 'cross_entity' && 'Transfers between known entities (e.g., exchange to whale)'}
+                </p>
+              </TooltipContent>
+            </Tooltip>
           ))}
         </div>
       </div>
