@@ -696,7 +696,7 @@ export default function WalletsPage() {
         {/* Wallet Alert Modal */}
         {showAlertModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowAlertModal(false)}>
-            <div className="bg-white rounded-2xl p-6 max-w-lg w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="bg-white rounded-2xl p-6 max-w-2xl w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Bell className="w-5 h-5 text-gray-700" />
@@ -711,27 +711,29 @@ export default function WalletsPage() {
                 Monitor behavioral changes and risk events for this wallet
               </p>
               
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 {walletAlertTypes.map((alert) => {
                   const Icon = alert.icon;
                   return (
                     <div key={alert.id} className="p-4 border border-gray-200 rounded-xl hover:border-gray-900 transition-colors cursor-pointer group">
                       <div className="flex items-start gap-3">
-                        <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-gray-900 transition-colors">
-                          <Icon className="w-5 h-5 text-gray-600 group-hover:text-white" />
+                        <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-gray-900 transition-colors flex-shrink-0">
+                          <Icon className="w-4 h-4 text-gray-600 group-hover:text-white" />
                         </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900 mb-1">{alert.name}</h4>
-                          <p className="text-xs text-gray-600 mb-2">{alert.description}</p>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-gray-900 text-sm mb-1">{alert.name}</h4>
+                          <p className="text-xs text-gray-600 mb-2 line-clamp-2">{alert.description}</p>
                           <div className="text-xs text-gray-500">
-                            <div className="font-medium mb-1">Triggers when:</div>
                             <ul className="space-y-0.5">
-                              {alert.triggers.map((trigger, i) => (
-                                <li key={i} className="flex items-start gap-1.5">
+                              {alert.triggers.slice(0, 2).map((trigger, i) => (
+                                <li key={i} className="flex items-start gap-1">
                                   <span className="text-gray-400">•</span>
-                                  <span>{trigger}</span>
+                                  <span className="line-clamp-1">{trigger}</span>
                                 </li>
                               ))}
+                              {alert.triggers.length > 2 && (
+                                <li className="text-gray-400 text-xs">+{alert.triggers.length - 2} more</li>
+                              )}
                             </ul>
                           </div>
                         </div>
