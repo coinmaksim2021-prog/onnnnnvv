@@ -174,20 +174,6 @@ const entityAlertTypes = [
     categoryColor: 'bg-gray-900'
   }
 ];
-    id: 'token_exit',
-    name: 'Token Exit',
-    description: 'Alert when entity exits a position',
-    triggers: ['Entity exits top-3 token', 'Large distribution detected'],
-    icon: TrendingDown
-  },
-  {
-    id: 'behavior_shift',
-    name: 'Behavior Shift',
-    description: 'Alert on entity behavior changes',
-    triggers: ['Accumulating → Distributing', 'Activity pattern change'],
-    icon: AlertTriangle
-  }
-];
 
 // Transaction filter types
 const txFilterTypes = [
