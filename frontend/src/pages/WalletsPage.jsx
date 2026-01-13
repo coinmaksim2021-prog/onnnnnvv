@@ -417,25 +417,29 @@ export default function WalletsPage() {
 
       {/* Wallet Analytics Components */}
       <div className="pb-8">
-        {/* Row 1: Cost Basis PnL + Swaps PnL */}
+        {/* Row 1: PnL Engine */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           <div>
-            <div className="flex items-center gap-2 mb-3 px-1">
-              <h3 className="text-section-title">
-                PnL Engine (All Sources)
-              </h3>
-              <InfoIcon 
-                title="Unified PnL Engine"
-                description="Combined FIFO cost-basis analysis across CEX deposits/withdrawals and DEX swaps. Tracks overall trading performance, positions, and profitability."
-                data={[
-                  { label: 'Total Trades', value: '468', color: 'white' },
-                  { label: 'Win Rate', value: '66.8%', color: 'emerald' },
-                  { label: 'Total PnL', value: '+$549K', color: 'emerald' },
-                  { label: 'Profit Factor', value: '3.34x', color: 'orange' }
-                ]}
-                position="bottom"
-              />
-            </div>
+            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+              <TrendingUp className="w-4 h-4 text-gray-500" />
+              PnL Engine (All Sources)
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                    <Info className="w-3.5 h-3.5 text-gray-400" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                  <p className="font-semibold mb-2">What is included?</p>
+                  <ul className="text-xs space-y-1">
+                    <li>• Spot trades (CEX & DEX)</li>
+                    <li>• Perpetual futures</li>
+                    <li>• LP positions</li>
+                    <li>• NFTs (optional)</li>
+                  </ul>
+                </TooltipContent>
+              </Tooltip>
+            </h3>
             <PnLEngine address={selectedWallet} />
           </div>
         </div>
