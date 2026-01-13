@@ -935,19 +935,26 @@ const EntityAlertModal = ({ onClose, entityName }) => {
             </div>
           </div>
         )}
-            <div className="text-sm font-semibold text-gray-900 mb-3">Configure Alert Threshold</div>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-600">Notify when {entityName} net flow exceeds</span>
-              <input 
-                type="text"
-                value={threshold}
-                onChange={(e) => setThreshold(e.target.value)}
-                className="w-20 px-3 py-1.5 border border-gray-300 rounded-lg text-sm font-semibold text-center"
-              />
-              <span className="text-sm text-gray-600">% of BTC daily volume</span>
-            </div>
-            <div className="mt-2 text-xs text-gray-500">
-              Example: {entityName} flow &gt; 0.15% of BTC daily volume ≈ $15M typically triggers significant market reaction
+        
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <div className="text-xs text-gray-500">
+            Alerts work automatically — no manual monitoring needed
+          </div>
+          <button 
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+              selectedAlert 
+                ? 'bg-gray-900 text-white hover:bg-gray-800' 
+                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+            }`}
+            disabled={!selectedAlert}
+          >
+            Create Alert
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
             </div>
           </div>
         )}
