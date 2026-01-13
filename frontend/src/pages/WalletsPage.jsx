@@ -227,7 +227,7 @@ export default function WalletsPage() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-lg font-bold text-gray-900">Top Wallets</h2>
-                <p className="text-sm text-gray-500">Click to analyze detailed behavior</p>
+                <p className="text-xs text-gray-500">Click to analyze detailed behavior</p>
               </div>
               <div className="flex items-center gap-3">
                 <div className="relative flex-1 max-w-md">
