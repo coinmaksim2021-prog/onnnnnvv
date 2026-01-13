@@ -669,7 +669,7 @@ export default function EntityDetail() {
   const [entity, setEntity] = useState(null);
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [isTracked, setIsTracked] = useState(false);
-  const [showAdvancedAnalytics, setShowAdvancedAnalytics] = useState(false);
+  const [showAdvancedAnalytics, setShowAdvancedAnalytics] = useState(true);
 
   useEffect(() => {
     // Mock entity data

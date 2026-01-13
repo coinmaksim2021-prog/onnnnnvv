@@ -182,8 +182,8 @@ export default function WalletsPage() {
   const [filterType, setFilterType] = useState('all');
   const [selectedWallet, setSelectedWallet] = useState('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045');
   const [showAlertModal, setShowAlertModal] = useState(false);
-  const [showAdvancedDetails, setShowAdvancedDetails] = useState(false);
-  const [showRiskDeepDive, setShowRiskDeepDive] = useState(false);
+  const [showAdvancedDetails, setShowAdvancedDetails] = useState(true);
+  const [showRiskDeepDive, setShowRiskDeepDive] = useState(true);
   const [trackedWallets, setTrackedWallets] = useState([]);
   const [showSignalsModal, setShowSignalsModal] = useState(false);
 
