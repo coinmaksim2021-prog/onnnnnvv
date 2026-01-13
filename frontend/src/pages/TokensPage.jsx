@@ -402,25 +402,37 @@ export default function TokensPage() {
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-2">
                 <ArrowRightLeft className="w-4 h-4 text-gray-500" />
-                Supply Flow
+                Supply Flow Map
+                <button className="ml-1 p-0.5 hover:bg-gray-100 rounded" title="Where tokens are flowing">
+                  <Info className="w-3.5 h-3.5 text-gray-400" />
+                </button>
               </h3>
               
               <div className="grid grid-cols-3 gap-2 mb-2">
                 <div className="p-2 bg-gray-50 rounded-lg text-center">
-                  <div className="text-xs text-gray-500">Mint/Burn</div>
+                  <div className="text-xs text-gray-500 mb-0.5">Mint/Burn</div>
                   <div className="text-sm font-bold text-gray-900">{token.supplyFlow.mintBurn.toLocaleString()}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">ETH</div>
                 </div>
                 <div className="p-2 bg-gray-50 rounded-lg text-center">
-                  <div className="text-xs text-gray-500">LP Flow</div>
+                  <div className="text-xs text-gray-500 mb-0.5">LP Flow</div>
                   <div className="text-sm font-bold text-gray-900">+${(token.supplyFlow.lpFlow / 1000000).toFixed(1)}M</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Into pools</div>
                 </div>
                 <div className="p-2 bg-gray-50 rounded-lg text-center">
-                  <div className="text-xs text-gray-500">Bridge</div>
+                  <div className="text-xs text-gray-500 mb-0.5">Bridge Flow</div>
                   <div className="text-sm font-bold text-gray-900">+${(token.supplyFlow.bridgeFlow / 1000000).toFixed(1)}M</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Cross-chain</div>
                 </div>
               </div>
               
-              <div className="text-xs text-gray-600">{token.supplyFlow.netEffect}</div>
+              {/* Supply Impact */}
+              <div className="pt-2 border-t border-gray-100">
+                <div className="text-xs text-gray-500 mb-0.5">Supply Impact:</div>
+                <div className="text-xs text-gray-700 font-medium">
+                  {token.supplyFlow.netEffect}
+                </div>
+              </div>
             </div>
           </div>
 
