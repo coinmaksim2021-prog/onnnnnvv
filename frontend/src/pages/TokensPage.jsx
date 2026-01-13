@@ -593,42 +593,42 @@ export default function TokensPage() {
                 </Tooltip>
               </h3>
               
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500 w-16">Retail</span>
-                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-gray-300 rounded-full" style={{ width: '25%' }}></div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600 w-16 font-medium">Retail</span>
+                  <div className="flex-1 mx-3 h-3 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-red-400 to-red-500" style={{ width: '25%' }}></div>
                   </div>
-                  <span className="font-semibold text-gray-500 w-8 text-right">Sell</span>
+                  <span className="font-semibold text-gray-500 w-12 text-right">Sell</span>
                 </div>
                 
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500 w-16">Pro</span>
-                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-gray-700 rounded-full" style={{ width: '75%' }}></div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600 w-16 font-medium">Pro</span>
+                  <div className="flex-1 mx-3 h-3 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600" style={{ width: '75%' }}></div>
                   </div>
-                  <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
+                  <span className="font-semibold text-gray-900 w-12 text-right">Buy</span>
                 </div>
                 
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500 w-16">Inst.</span>
-                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-gray-800 rounded-full" style={{ width: '85%' }}></div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600 w-16 font-medium">Inst.</span>
+                  <div className="flex-1 mx-3 h-3 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-600" style={{ width: '85%' }}></div>
                   </div>
-                  <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
+                  <span className="font-semibold text-gray-900 w-12 text-right">Buy</span>
                 </div>
                 
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500 w-16">Whale</span>
-                  <div className="flex-1 mx-3 h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-gray-900 rounded-full" style={{ width: '90%' }}></div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600 w-16 font-medium">Whale</span>
+                  <div className="flex-1 mx-3 h-3 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600" style={{ width: '90%' }}></div>
                   </div>
-                  <span className="font-semibold text-gray-900 w-8 text-right">Buy</span>
+                  <span className="font-semibold text-gray-900 w-12 text-right">Buy</span>
                 </div>
               </div>
               
               {/* Interpretation */}
-              <div className="pt-3 border-t border-gray-100 mt-4">
+              <div className="pt-4 border-t border-gray-100 mt-5">
                 <div className="text-xs text-gray-600">
                   <span className="font-semibold">Dominant cohort:</span> Institutional & Whale buying while Retail reduces exposure — confirms strong structure.
                 </div>
