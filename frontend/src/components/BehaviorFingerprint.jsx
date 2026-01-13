@@ -88,7 +88,7 @@ export default function BehaviorFingerprint() {
         <div className="text-lg font-extrabold text-gray-900 mb-2">{walletType.primary}</div>
         <div className="flex flex-wrap gap-1.5">
           {walletType.tags.map((tag, i) => (
-            <span key={i} className="badge badge-purple">{tag}</span>
+            <span key={i} className="px-2 py-0.5 bg-gray-100 rounded text-xs text-gray-700 font-medium uppercase tracking-wide">{tag}</span>
           ))}
         </div>
       </div>
