@@ -578,7 +578,7 @@ export default function TokensPage() {
             
             {/* Market Pressure by Cohort */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
-              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-4">
                 <BarChart3 className="w-4 h-4 text-gray-500" />
                 Market Pressure by Cohort
                 <Tooltip>
@@ -593,7 +593,7 @@ export default function TokensPage() {
                 </Tooltip>
               </h3>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-500 w-16">Retail</span>
                   <div className="flex-1 mx-3 h-1.5 bg-gray-100 rounded-full overflow-hidden">
