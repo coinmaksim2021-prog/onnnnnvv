@@ -608,7 +608,6 @@ export default function WalletsPage() {
             </div>
           </div>
         )}
-        </div>
       </div>
     </TooltipProvider>
   );
