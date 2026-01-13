@@ -97,8 +97,8 @@ export default function BehaviorFingerprint() {
         {/* Radar Chart - ЛЕВАЯ ЧАСТЬ */}
         <div className="flex flex-col">
           <div className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Activity Profile</div>
-          <div className="flex-1">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="flex-1 min-h-[150px]">
+            <ResponsiveContainer width="100%" height="100%" minHeight={150}>
               <RadarChart data={behaviorMetrics}>
                 <PolarGrid stroke="rgba(0,0,0,0.06)" />
                 <PolarAngleAxis 
