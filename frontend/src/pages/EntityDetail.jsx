@@ -130,24 +130,50 @@ const getEntityIntelligence = (entityId) => {
   return data[entityId] || data.binance;
 };
 
-// Alert types for Entity (including new Market Impact Alert)
+// Alert types for Entity - 3 categories: Structural, Impact-based, Cross-Entity
 const entityAlertTypes = [
+  // Structural Alerts
   {
-    id: 'market_impact',
-    name: 'Market Impact Alert',
-    description: 'Alert on significant market-moving activity',
-    triggers: ['Net flow exceeds X% of token daily volume', 'Entity activity > historical avg'],
+    id: 'structural_shift',
+    name: 'Structural Shift',
+    category: 'Structural',
+    description: 'Alert on fundamental behavior changes',
+    triggers: ['Accumulation → Distribution switch', 'Confidence drops below threshold', 'Token alignment changes'],
+    icon: Activity,
+    categoryColor: 'bg-gray-900'
+  },
+  // Impact-based Alerts
+  {
+    id: 'impact_threshold',
+    name: 'Impact Threshold',
+    category: 'Impact-based',
+    description: 'Alert when entity exceeds impact levels',
+    triggers: ['Net flow > historical 90th percentile', 'Token impact score > 7/10', 'Flow > X% of daily volume'],
     icon: Target,
-    isNew: true
+    isNew: true,
+    categoryColor: 'bg-teal-500'
+  },
+  // Cross-Entity Alerts
+  {
+    id: 'cross_entity',
+    name: 'Cross-Entity Signal',
+    category: 'Cross-Entity',
+    description: 'Alert when multiple entities align',
+    triggers: ['2+ entities aligned on same token', 'Exchange + Smart Money same direction', 'Entity cluster forming'],
+    icon: Users,
+    isNew: true,
+    categoryColor: 'bg-purple-500'
   },
   {
-    id: 'net_flow_flip',
-    name: 'Net Flow Flip',
-    description: 'Alert when net flow direction changes',
-    triggers: ['Net flow flips from + to -', 'Net flow flips from - to +'],
-    icon: Activity
-  },
-  {
+    id: 'behavior_shift',
+    name: 'Behavior Shift',
+    category: 'Structural',
+    description: 'Alert on activity pattern changes',
+    triggers: ['Tx frequency change > 50%', 'New token exposure', 'Risk profile shift'],
+    icon: AlertTriangle,
+    categoryColor: 'bg-gray-900'
+  }
+];
     id: 'token_exit',
     name: 'Token Exit',
     description: 'Alert when entity exits a position',
