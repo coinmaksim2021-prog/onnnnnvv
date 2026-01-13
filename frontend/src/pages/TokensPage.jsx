@@ -145,12 +145,91 @@ const tokenData = {
   }
 };
 
+// Alert types configuration
+const alertTypes = [
+  {
+    id: 'structure_break',
+    name: 'Structure Break',
+    description: 'Alert when token structure fundamentals change',
+    triggers: [
+      'Smart money holdings decrease >5%',
+      'Net flow turns negative for 3+ days',
+      'Pressure flips from Buy to Sell dominance'
+    ],
+    icon: AlertTriangle
+  },
+  {
+    id: 'divergence',
+    name: 'Divergence',
+    description: 'Alert when flow and price move in opposite directions',
+    triggers: [
+      'Net Flow ↑ but Price ↓ (Absorption)',
+      'Net Flow ↓ but Price ↑ (Distribution risk)',
+      'Divergence persists for 24+ hours'
+    ],
+    icon: TrendingDown
+  },
+  {
+    id: 'market_misalignment',
+    name: 'Market Misalignment',
+    description: 'Alert when token no longer matches Market regime',
+    triggers: [
+      'Token structure becomes Bearish while Market is Risk-On',
+      'Major cohort behavior contradicts Market signal',
+      'Confidence drops below Medium'
+    ],
+    icon: Activity
+  }
+];
+
+// Strategy logic data
+const strategyLogic = {
+  'Smart Money Follow': {
+    description: 'Follow institutional and smart money accumulation patterns',
+    entryConditions: [
+      'Smart money holdings increasing >3% over 7 days',
+      'Institutional & Whale cohorts actively buying',
+      'Structure confirmed for 5+ days',
+      'Market regime aligned (Risk-On preferred)'
+    ],
+    invalidation: [
+      'Smart money holdings decrease >2%',
+      'Whale cohort flips to Sell',
+      'Structure breaks (becomes Bearish)',
+      'Market regime shifts to Risk-Off'
+    ],
+    typicalDuration: '1–3 weeks (mid-term)',
+    riskLevel: 'Medium',
+    bestFor: 'Following institutional trends with 2–4 week horizon'
+  },
+  'Narrative Rider': {
+    description: 'Ride narrative-driven moves with structural confirmation',
+    entryConditions: [
+      'Token part of confirmed narrative (Early/Confirmed stage)',
+      'Structure supports narrative (Supportive/Bullish)',
+      'Bridge flow or LP activity increasing',
+      'Retail interest growing but not dominant'
+    ],
+    invalidation: [
+      'Narrative shifts to Crowded stage',
+      'Structure turns Bearish',
+      'Retail dominance >40%',
+      'Price significantly above structure support'
+    ],
+    typicalDuration: '1–2 weeks (narrative lifecycle dependent)',
+    riskLevel: 'Medium-High',
+    bestFor: 'Narrative-based trades with structural validation'
+  }
+};
+
 export default function TokensPage() {
   const [selectedToken, setSelectedToken] = useState('eth');
   const [searchQuery, setSearchQuery] = useState('');
   const [showCorrelation, setShowCorrelation] = useState(false);
   const [selectedChange, setSelectedChange] = useState(null);
   const [selectedTrade, setSelectedTrade] = useState(null);
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [showStrategyModal, setShowStrategyModal] = useState(null);
   
   const token = tokenData[selectedToken] || tokenData.eth;
   const filteredTokens = topTokens.filter(t => 
