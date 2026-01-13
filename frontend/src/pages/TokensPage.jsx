@@ -693,55 +693,56 @@ export default function TokensPage() {
                 })}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Suggested Strategies — WITH CONDITIONS */}
-            <div className="bg-gray-900 text-white rounded-xl p-4">
-              <h3 className="text-sm font-semibold flex items-center gap-2 mb-2">
-                <Zap className="w-4 h-4 text-gray-400" />
-                Suggested Strategies
-                <span className="text-xs text-gray-500">(Read-only)</span>
-              </h3>
-              
-              <div className="text-xs text-gray-400 mb-3">
-                Based on: {token.suggestedStrategies.reasons.join(' • ')}
-              </div>
-              
-              <div className="space-y-2">
-                {token.suggestedStrategies.strategies.map((strategy, i) => (
-                  <div key={i} className="p-3 bg-white/10 rounded-lg border border-white/10">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm font-medium">{strategy.name}</span>
-                      </div>
-                      <span className="text-xs px-2 py-0.5 bg-white/10 rounded text-gray-300">Active</span>
-                    </div>
-                    
-                    <div className="text-xs text-gray-400 mb-2">{strategy.why}</div>
-                    
-                    {/* Trigger conditions */}
-                    <div className="pt-2 border-t border-white/10">
-                      <div className="text-xs text-gray-500 mb-1">Trigger Conditions:</div>
-                      <div className="flex items-center gap-2 text-xs text-gray-400">
-                        <Check className="w-3 h-3 text-gray-500" />
-                        <span>Smart money accumulation confirmed</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-                        <Check className="w-3 h-3 text-gray-500" />
-                        <span>Structure duration: mid-term (1–3 weeks)</span>
-                      </div>
-                    </div>
-                    
-                    <button 
-                      onClick={() => setShowStrategyModal(strategy.name)}
-                      className="mt-2 text-xs text-gray-400 hover:text-white underline"
-                    >
-                      View strategy logic →
-                    </button>
+        {/* Suggested Strategies — Full Width Bottom Block */}
+        <div className="bg-gray-900 text-white rounded-2xl p-5 mt-4">
+          <h3 className="text-sm font-semibold flex items-center gap-2 mb-1">
+            <Zap className="w-4 h-4 text-gray-400" />
+            Suggested Strategies
+            <span className="text-xs text-gray-500">(Read-only)</span>
+          </h3>
+          
+          <div className="text-xs text-gray-400 mb-4">
+            Based on: {token.suggestedStrategies.reasons.join(' • ')}
+          </div>
+          
+          {/* Two strategies in horizontal layout */}
+          <div className="grid grid-cols-2 gap-4">
+            {token.suggestedStrategies.strategies.map((strategy, i) => (
+              <div key={i} className="p-4 bg-white/10 rounded-xl border border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm font-medium">{strategy.name}</span>
                   </div>
-                ))}
+                  <span className="text-xs px-2 py-0.5 bg-white/10 rounded text-gray-300">Active</span>
+                </div>
+                
+                <div className="text-xs text-gray-400 mb-3">{strategy.why}</div>
+                
+                {/* Trigger conditions */}
+                <div className="pt-3 border-t border-white/10">
+                  <div className="text-xs text-gray-500 mb-2">Trigger Conditions:</div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-1">
+                    <Check className="w-3 h-3 text-gray-500" />
+                    <span>Smart money accumulation confirmed</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <Check className="w-3 h-3 text-gray-500" />
+                    <span>Structure duration: mid-term (1–3 weeks)</span>
+                  </div>
+                </div>
+                
+                <button 
+                  onClick={() => setShowStrategyModal(strategy.name)}
+                  className="mt-3 text-xs text-gray-400 hover:text-white underline"
+                >
+                  View strategy logic →
+                </button>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
