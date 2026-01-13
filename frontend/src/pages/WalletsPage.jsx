@@ -217,93 +217,101 @@ export default function WalletsPage() {
             </div>
           </div>
 
-      {/* Top Wallets Quick View */}
-      <div className="px-4 mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <SectionHeader 
-            title="Top Wallets" 
-            description="Click to analyze"
-          />
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-md">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+          {/* Top Wallets Quick View */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">Top Wallets</h2>
+                <p className="text-sm text-gray-500">Click to analyze detailed behavior</p>
               </div>
-              <input
-                type="text"
-                placeholder="Search by address or label..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                data-testid="wallets-search-input"
-                className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-full text-sm font-medium font-mono focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
-              />
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search by address or label..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    data-testid="wallets-search-input"
+                    className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-gray-900 transition-colors"
+                  />
+                </div>
+                <div className="flex items-center gap-2 bg-gray-50 rounded-xl p-1">
+                  {['all', 'Smart Money', 'Whale', 'Fund'].map(type => (
+                    <button
+                      key={type}
+                      onClick={() => setFilterType(type)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                        filterType === type 
+                          ? 'bg-gray-900 text-white' 
+                          : 'text-gray-600 hover:bg-white'
+                      }`}
+                    >
+                      {type === 'all' ? 'All' : type}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2 bg-gray-50/80 rounded-full p-1.5">
-              {['all', 'Smart Money', 'Whale', 'Fund'].map(type => (
-                <button
-                  key={type}
-                  onClick={() => setFilterType(type)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${filterType === type ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' : 'text-gray-600 hover:bg-white/80'}`}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredWallets.map((wallet) => (
+                <div
+                  key={wallet.address}
+                  onClick={() => setSelectedWallet(wallet.address)}
+                  className={`bg-white border rounded-xl p-4 cursor-pointer transition-all hover:border-gray-900 ${
+                    selectedWallet === wallet.address 
+                      ? 'border-gray-900 ring-2 ring-gray-900 ring-offset-2' 
+                      : 'border-gray-200'
+                  }`}
                 >
-                  {type === 'all' ? 'All' : type}
-                </button>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center">
+                        <Wallet className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-gray-900">{wallet.label}</div>
+                        <code className="text-xs text-gray-500 font-mono">
+                          {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
+                        </code>
+                      </div>
+                    </div>
+                    <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">
+                      {wallet.type}
+                    </span>
+                  </div>
+
+                  {/* Why Featured? */}
+                  <div className="mb-3 p-2 bg-gray-50 rounded-lg">
+                    <div className="text-xs text-gray-500 mb-0.5">Why featured?</div>
+                    <div className="text-xs font-medium text-gray-900">{wallet.whyFeatured}</div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3 pt-3 border-t border-gray-100">
+                    <div>
+                      <div className="text-xs text-gray-500 mb-0.5">Balance</div>
+                      <div className="text-sm font-bold text-gray-900">{wallet.balance}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-500 mb-0.5">PnL</div>
+                      <div className={`text-sm font-bold ${
+                        wallet.pnl.startsWith('+') ? 'text-gray-900' : 'text-gray-500'
+                      }`}>
+                        {wallet.pnl}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-500 mb-0.5">Risk</div>
+                      <div className="text-sm font-bold text-gray-900">
+                        {wallet.riskScore}/100
+                      </div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {filteredWallets.map((wallet) => (
-            <Link
-              key={wallet.address}
-              to={`/portfolio/${wallet.address}`}
-              className={`glass-card p-5 text-left transition-all hover-lift ${
-                selectedWallet === wallet.address 
-                  ? 'ring-2 ring-blue-500 bg-gradient-to-br from-blue-50/80 to-purple-50/40' 
-                  : ''
-              }`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 via-purple-600 to-blue-600 flex items-center justify-center shadow-lg">
-                      <Wallet className="w-6 h-6 text-white drop-shadow-sm" />
-                    </div>
-                    {selectedWallet === wallet.address && (
-                      <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-blue-500 rounded-full border-2 border-white" />
-                    )}
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-gray-900">{wallet.label}</div>
-                    <code className="text-xs text-gray-500 font-mono">{wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}</code>
-                  </div>
-                </div>
-                <span className={`badge ${typeBadgeColors[wallet.type]}`}>{wallet.type}</span>
-              </div>
-              <div className="grid grid-cols-3 gap-3 pt-3 border-t border-gray-100">
-                <div>
-                  <div className="text-xs text-gray-500 mb-0.5">Balance</div>
-                  <div className="text-sm font-bold">{wallet.balance}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500 mb-0.5">PnL</div>
-                  <div className={`text-sm font-bold ${wallet.pnl.startsWith('+') ? 'text-emerald-600' : 'text-red-600'}`}>
-                    {wallet.pnl}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500 mb-0.5">Risk</div>
-                  <div className={`text-sm font-bold ${wallet.riskScore < 25 ? 'text-emerald-600' : wallet.riskScore < 50 ? 'text-orange-600' : 'text-red-600'}`}>
-                    {wallet.riskScore}/100
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
 
       {/* Wallet Analytics Components */}
       <div className="px-4 pb-8">
