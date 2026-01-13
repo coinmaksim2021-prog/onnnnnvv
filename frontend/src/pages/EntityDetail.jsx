@@ -284,10 +284,38 @@ const TokenImpactMatrix = ({ tokenImpact, entityName }) => {
       {/* Table Header */}
       <div className="grid grid-cols-5 gap-4 pb-3 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
         <div>Token</div>
-        <div>Direction</div>
-        <div>Strength</div>
-        <div>Confidence</div>
-        <div className="text-right">Impact</div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="cursor-help flex items-center gap-1">Direction <Info className="w-3 h-3" /></div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">Accumulation = entity buying, Distribution = entity selling, Neutral = mixed signals</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="cursor-help flex items-center gap-1">Strength <Info className="w-3 h-3" /></div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">High = strong consistent pattern, Medium = moderate activity, Low = weak or inconsistent</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="cursor-help flex items-center gap-1">Confidence <Info className="w-3 h-3" /></div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">Statistical confidence in the direction assessment based on historical patterns</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="text-right cursor-help flex items-center justify-end gap-1">Impact <Info className="w-3 h-3" /></div>
+          </TooltipTrigger>
+          <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+            <p className="text-xs">Combined score: (Flow % of mcap) + (Tx frequency) + (Historical correlation). Higher = more market-moving.</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* Table Body */}
