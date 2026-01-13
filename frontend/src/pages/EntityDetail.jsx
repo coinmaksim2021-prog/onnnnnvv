@@ -426,6 +426,16 @@ const HistoricalEffect = ({ historicalEffect, entityName }) => {
         <div className="flex items-center gap-2 mb-2">
           <Zap className="w-4 h-4 text-gray-700" />
           <span className="text-sm font-semibold text-gray-900">Best Response</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="p-0.5 hover:bg-gray-100 rounded">
+                <Info className="w-3 h-3 text-gray-400" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="bg-gray-900 text-white max-w-xs border border-white/20">
+              <p className="text-xs">Suggested action based on historical outcomes. Not financial advice — use as one data point in your decision.</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
         <div className="text-sm text-gray-700">{historicalEffect.bestResponse}</div>
       </div>
