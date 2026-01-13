@@ -38,6 +38,36 @@ Deploy and customize a crypto analytics dashboard from GitHub repository. Focus 
   - MarketSignalCard (Bell/MapPin icons instead of emojis)
 - [x] Fixed crash bug (missing X import in MarketDislocationCard.jsx)
 
+### January 13, 2026 - Tokens Validation Layer Enhancement
+- [x] **TOKEN INTELLIGENCE** - Added Market Alignment block
+  - Shows connection to Market regime (Risk-On/Risk-Off)
+  - Changed button text to "Create Token Alert" for clarity
+- [x] **NET FLOW → FLOW→PRICE CONFIRMATION** - Complete redesign
+  - Replaced abstract chart with decision-focused panel
+  - 3 states: Accumulation Confirmed, Absorption, Distribution Risk
+  - Added interpretation line
+- [x] **HOLDER COMPOSITION** - Added Structure Insight
+  - Added tooltips for clarity
+  - Visual highlighting of changes
+  - Structure insight interpretation
+- [x] **SUPPLY FLOW** - Added Supply Impact
+  - Detailed labels under values
+  - Supply Impact interpretation
+- [x] **BUY/SELL PRESSURE → MARKET PRESSURE BY COHORT** - Redesigned
+  - Changed from abstract 50.8% to cohort-based visualization
+  - Shows Retail/Pro/Inst/Whale actions separately
+  - Added interpretation: "Dominant cohort"
+- [x] **TRADE SIZE BREAKDOWN** - Enhanced
+  - Added cohort icons (🐟🐠🐬🐋🐳)
+  - Added "Dominant Support" summary block
+  - Improved tooltip
+- [x] **SUGGESTED STRATEGIES** - Added transparency
+  - Added "(Read-only)" marker
+  - Status badges (Active/Inactive)
+  - Trigger Conditions for each strategy
+  - "View strategy logic" link
+- [x] **Added tooltips** across all major blocks for user guidance
+
 ## Prioritized Backlog
 
 ### P0 - Critical
