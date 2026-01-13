@@ -320,13 +320,13 @@ export default function WalletsPage() {
 
           {/* Core Metrics - LEVEL 3 */}
           <div className="mb-6">
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Core Metrics</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4 px-1">Core Metrics</h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
               {/* PnL Summary */}
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-gray-900">PnL Summary</h3>
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">PnL Summary</h3>
                   <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">FACT</span>
                 </div>
                 <div className="space-y-2">
@@ -348,12 +348,12 @@ export default function WalletsPage() {
               {/* Risk Score */}
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-gray-900">Risk Score</h3>
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Risk Score</h3>
                   <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">FACT</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex-1">
-                    <div className="text-4xl font-bold text-gray-900">12<span className="text-xl text-gray-400">/100</span></div>
+                    <div className="text-4xl font-bold text-green-600">12<span className="text-xl text-gray-400">/100</span></div>
                     <div className="text-xs text-gray-600 mt-1">Low Risk</div>
                   </div>
                   <div className="text-right text-xs text-gray-600">
@@ -367,8 +367,8 @@ export default function WalletsPage() {
               {/* Dominant Strategy */}
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-gray-900">Dominant Strategy</h3>
-                  <span className="px-2 py-1 bg-blue-100 rounded-lg text-xs font-medium text-blue-700">MODEL</span>
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Dominant Strategy</h3>
+                  <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">MODEL</span>
                 </div>
                 <div>
                   <div className="text-lg font-bold text-gray-900 mb-1">Smart Money Trader</div>
@@ -389,8 +389,8 @@ export default function WalletsPage() {
               className="w-full flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
             >
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-semibold text-gray-900">Advanced Analysis</h2>
-                <span className="px-2 py-1 bg-blue-100 rounded-lg text-xs font-medium text-blue-700">MODEL + INTERPRETATION</span>
+                <h2 className="text-lg font-bold text-gray-900">Advanced Analysis</h2>
+                <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">MODEL</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 {showAdvancedDetails ? 'Hide' : 'Show'}
