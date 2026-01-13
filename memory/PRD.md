@@ -175,24 +175,25 @@ Deploy and customize a crypto analytics dashboard from GitHub repository. Focus 
 - `/app/frontend/src/components/AlertModal.jsx` - Alert creation modal
 - `/app/frontend/src/components/MarketDislocationCard.jsx` - Edge detection card
 
-### January 13, 2026 - Entities Page Refactoring (COMPLETE ✅)
-- [x] **ENTITY INTELLIGENCE** - Decision Layer (like Wallets)
-  - SUPPORTIVE/NEUTRAL/CONCERNING verdict with Decision Score
-  - Current State indicator (Accumulating → Stable)
-  - Why This Verdict? block with reasons
-  - High/Moderate/Low Confidence badge
-- [x] **ENTITY IMPACT ENGINE** - Connection to Tokens & Market
-  - Market Impact: Accumulating tokens, Net Flow vs Market, Lead Time, Regime Alignment
-  - Token Alignment: Shows which tokens align with entity activity
-  - Insight block linking to Tokens page analysis
-- [x] **TRACK ENTITY** - Toggle button with state
-- [x] **ALERT MODAL** - 2x2 grid layout
-  - Net Flow Flip, Token Exit, Accumulation Start, Behavior Shift
-- [x] **ADVANCED ANALYTICS** - Collapsed by default
-  - Top Accumulated/Distributed (7d)
-  - Recent Transactions
-- [x] **TOOLTIPS** - Confidence, Net Flow, Decision Score
-- [x] **MONOCHROME DESIGN** - Unified with Wallets/Tokens pages
+### January 13, 2026 - Entities Page Conceptual Refactoring (COMPLETE ✅)
+**Goal: Transform from "what entity does" → "what YOU should do when entity acts"**
+
+- [x] **TOKEN IMPACT MATRIX** - Which tokens are affected when entity acts
+  - Direction (Accumulation/Distribution/Neutral), Strength (High/Medium/Low), Confidence %, Impact Score
+  - Actionable Insight at bottom ("When Binance accumulates ETH/SOL, consider early entry within 24h")
+  - Impact Score formula: (Entity Flow % of token mcap) + (Tx frequency) + (Historical correlation)
+- [x] **HISTORICAL EFFECT** - Statistics when condition occurred (NOT prediction)
+  - Condition: "Net inflow > $100M in 24h" (47 occurrences)
+  - % Market moved up (72%), Avg lag (1.3d), Median move (+3.2%)
+  - Best Response: "Early accumulation within 24h window"
+- [x] **MARKET IMPACT ALERT** - New alert type with configurable threshold
+  - "Notify when Binance net flow exceeds 0.15% of BTC daily volume"
+  - Configuration UI with threshold input
+- [x] **RECENT TRANSACTIONS FILTERS** - Transform from simple list to insight tool
+  - Filter by: All | Market-Moving | First Entry | Cross-Entity
+  - Flags column showing transaction significance
+- [x] **PAGINATION** - 9 items per page (3x3 grid) with teal-style pagination
+- [x] Entity → Token → User Action flow implemented
 
 ## Notes
 - **ALL DATA IS MOCKED** - Frontend uses hardcoded mock data
