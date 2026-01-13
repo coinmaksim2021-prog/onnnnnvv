@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, Wallet, TrendingUp, TrendingDown, Shield, AlertTriangle, ArrowUpRight,
-  Activity, Check, Bell, Eye, Info, X, Zap, Target, Clock
+  Activity, Check, Bell, Eye, Info, X, Zap, Target, Clock, ChevronDown, ChevronUp
 } from 'lucide-react';
 import Header from '../components/Header';
 import { PageHeader, SectionHeader } from '../components/PageHeader';
