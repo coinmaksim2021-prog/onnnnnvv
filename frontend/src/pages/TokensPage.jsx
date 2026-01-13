@@ -5,8 +5,14 @@ import {
   BarChart3, Check, AlertTriangle, Zap, TrendingUp, TrendingDown, Bell, 
   Building, ExternalLink, Activity, ArrowUp, ArrowDown, Eye, X, Info
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 import Header from '../components/Header';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../components/ui/tooltip";
 
 // Mock tokens data
 const topTokens = [
