@@ -68,6 +68,23 @@ Deploy and customize a crypto analytics dashboard from GitHub repository. Focus 
   - "View strategy logic" link
 - [x] **Added tooltips** across all major blocks for user guidance
 
+### January 13, 2026 - Critical UX Fixes (Alerts, Strategy Logic, Tooltips)
+- [x] **ALERTS MODAL** - Implemented Token Alert creation
+  - 3 fixed alert types: Structure Break, Divergence, Market Misalignment
+  - Each alert shows triggers and description
+  - UI-level implementation (backend coming soon)
+- [x] **STRATEGY LOGIC MODAL** - Added strategy documentation
+  - Shows Entry Conditions, Invalidation, Duration
+  - Risk Level and Best For scenarios
+  - Read-only documentation for transparency
+- [x] **RADIX UI TOOLTIPS** - Replaced all title attributes
+  - Flow → Price Confirmation tooltip
+  - Holder Composition tooltip
+  - Supply Flow Map tooltip
+  - Market Pressure by Cohort tooltip
+  - Trade Size Breakdown tooltip
+  - Professional UX with proper Radix UI implementation
+
 ## Prioritized Backlog
 
 ### P0 - Critical
