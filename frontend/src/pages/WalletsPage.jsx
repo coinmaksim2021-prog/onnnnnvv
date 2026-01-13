@@ -505,74 +505,54 @@ export default function WalletsPage() {
           {/* Detailed Analytics - COLLAPSED BY DEFAULT */}
           <div className="mb-6">
             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Detailed Analytics</h2>
-        {/* Row 1: PnL Engine */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-              <TrendingUp className="w-4 h-4 text-gray-500" />
-              PnL Engine (All Sources)
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
-                    <Info className="w-3.5 h-3.5 text-gray-400" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-gray-900 text-white max-w-xs">
-                  <p className="font-semibold mb-2">What is included?</p>
-                  <ul className="text-xs space-y-1">
-                    <li>• Spot trades (CEX & DEX)</li>
-                    <li>• Perpetual futures</li>
-                    <li>• LP positions</li>
-                    <li>• NFTs (optional)</li>
-                  </ul>
-                </TooltipContent>
-              </Tooltip>
-            </h3>
-            <PnLEngine address={selectedWallet} />
-          </div>
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 px-1">Detailed Analytics</h2>
+        
+        {/* Behavior Fingerprint */}
+        <div className="mb-4">
+          <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3 px-1">
+            <Target className="w-4 h-4 text-gray-500" />
+            Behavior Fingerprint
+            <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">FACT</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                  <Info className="w-3.5 h-3.5 text-gray-400" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                <p className="mb-2">ML-based wallet classification analyzing trading patterns, DEX activity, and holding behavior.</p>
+                <p className="text-xs text-gray-400">Classification confidence: 87% based on 468 trades</p>
+              </TooltipContent>
+            </Tooltip>
+          </h3>
+          <BehaviorFingerprint address={selectedWallet} />
         </div>
 
-        {/* Row 2: Behavior Fingerprint + Advanced Risk Flags */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-              <Target className="w-4 h-4 text-gray-500" />
-              Behavior Fingerprint
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
-                    <Info className="w-3.5 h-3.5 text-gray-400" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-gray-900 text-white max-w-xs">
-                  <p>ML-based wallet classification analyzing trading patterns, DEX activity, DeFi farming, and holding behavior.</p>
-                  <p className="text-xs mt-2 text-gray-400">Classification confidence: 87% based on 468 trades</p>
-                </TooltipContent>
-              </Tooltip>
-            </h3>
-            <BehaviorFingerprint address={selectedWallet} />
-          </div>
+        {/* Risk Deep Dive - COLLAPSIBLE */}
+        <div>
+          <button
+            onClick={() => setShowRiskDeepDive(!showRiskDeepDive)}
+            className="w-full flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors mb-4"
+          >
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-gray-700" />
+              <h3 className="text-sm font-semibold text-gray-900">Risk Deep Dive</h3>
+              <span className="px-2 py-1 bg-gray-100 rounded-lg text-xs font-medium text-gray-700">FACT</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              {showRiskDeepDive ? 'Hide Details' : 'Show Details'}
+              {showRiskDeepDive ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </button>
 
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
-              <Shield className="w-4 h-4 text-gray-500" />
-              Advanced Risk Flags
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
-                    <Info className="w-3.5 h-3.5 text-gray-400" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent className="bg-gray-900 text-white max-w-xs">
-                  <p>Comprehensive risk assessment including sanctions, mixer interactions, and dangerous approvals.</p>
-                  <p className="text-xs mt-2 font-semibold text-green-400">Overall wallet risk: Acceptable for tracking & mirroring</p>
-                </TooltipContent>
-              </Tooltip>
-            </h3>
-            <AdvancedRiskFlags address={selectedWallet} />
-          </div>
+          {showRiskDeepDive && (
+            <div className="mb-4">
+              <AdvancedRiskFlags address={selectedWallet} />
+            </div>
+          )}
         </div>
       </div>
+        </div>
 
         {/* Wallet Alert Modal */}
         {showAlertModal && (
