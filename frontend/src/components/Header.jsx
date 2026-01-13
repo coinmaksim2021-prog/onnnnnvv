@@ -50,7 +50,7 @@ export default function Header() {
                   className={`
                     flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300
                     ${active 
-                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' 
+                      ? 'bg-gray-900 text-white shadow-lg shadow-gray-900/20' 
                       : 'text-gray-600 hover:bg-white/80 hover:text-gray-900 hover:shadow-sm'
                     }
                   `}
@@ -65,8 +65,8 @@ export default function Header() {
           {/* Right Section */}
           <div className="flex items-center gap-3">
             {/* Search - Telegram Style */}
-            <div className={`hidden md:flex items-center gap-2.5 px-4 py-2.5 bg-gray-50/80 rounded-full transition-all duration-300 ${searchFocused ? 'ring-2 ring-blue-500/30 bg-white/90' : ''}`}>
-              <Search className={`w-4 h-4 transition-colors ${searchFocused ? 'text-blue-500' : 'text-gray-400'}`} />
+            <div className={`hidden md:flex items-center gap-2.5 px-4 py-2.5 bg-gray-50/80 rounded-full transition-all duration-300 ${searchFocused ? 'ring-2 ring-gray-900/20 bg-white/90' : ''}`}>
+              <Search className={`w-4 h-4 transition-colors ${searchFocused ? 'text-gray-900' : 'text-gray-400'}`} />
               <input 
                 type="text" 
                 placeholder="Search..." 
@@ -76,9 +76,9 @@ export default function Header() {
               />
             </div>
             
-            {/* Connect Button - Gradient */}
-            <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full text-sm font-bold transition-all shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:scale-105 active:scale-95">
-              <Wallet className="w-4 h-4 drop-shadow-sm" />
+            {/* Connect Button - Black */}
+            <button className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-full text-sm font-bold transition-all shadow-lg shadow-gray-900/20 hover:shadow-xl hover:shadow-gray-900/30 hover:scale-105 active:scale-95">
+              <Wallet className="w-4 h-4" />
               <span className="hidden sm:inline">Connect</span>
             </button>
 
@@ -108,7 +108,7 @@ export default function Header() {
                     className={`
                       flex flex-col items-center gap-2 p-4 rounded-2xl transition-all
                       ${active 
-                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' 
+                        ? 'bg-gray-900 text-white shadow-lg shadow-gray-900/20' 
                         : 'bg-gray-50/80 text-gray-600 hover:bg-white/80 hover:shadow-sm'
                       }
                     `}
