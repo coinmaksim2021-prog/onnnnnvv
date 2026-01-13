@@ -150,13 +150,72 @@ export default function WalletsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
-      <Header />
-      
-      <PageHeader 
-        title="Wallet Intelligence"
-        description="Analyze wallet behavior, PnL performance, risk scores, and trading patterns"
-      />
+    <TooltipProvider>
+      <div className="min-h-screen bg-white">
+        <Header />
+        
+        <div className="px-4 py-6">
+          {/* Wallet Intelligence Summary - НОВЫЙ БЛОК */}
+          <div className="bg-gray-900 text-white rounded-2xl p-5 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">Wallet Intelligence</div>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-bold">{walletIntelligence.classification}</span>
+                  <span className="px-2 py-1 bg-white/10 rounded-lg text-xs font-medium">
+                    {walletIntelligence.currentMode}
+                  </span>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-xs text-gray-400">Reliability Score</div>
+                <div className="text-2xl font-bold">{walletIntelligence.reliabilityScore}/100</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="p-3 bg-white/5 rounded-lg">
+                <div className="text-xs text-gray-400 mb-1">Classification</div>
+                <div className="text-sm font-semibold text-white">
+                  {walletIntelligence.classification}
+                  <span className="text-xs text-gray-400 ml-2">({walletIntelligence.confidence}% confidence)</span>
+                </div>
+              </div>
+              <div className="p-3 bg-white/5 rounded-lg">
+                <div className="text-xs text-gray-400 mb-1">Market Alignment</div>
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-green-400" />
+                  <span className="text-sm font-semibold text-white">{walletIntelligence.marketAlignment}</span>
+                </div>
+              </div>
+              <div className="p-3 bg-white/5 rounded-lg">
+                <div className="text-xs text-gray-400 mb-1">Token Overlap</div>
+                <div className="flex items-center gap-1">
+                  {walletIntelligence.tokenOverlap.map((token, i) => (
+                    <span key={i} className="px-2 py-0.5 bg-white/10 rounded text-xs font-medium">{token}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-3 border-t border-white/10">
+              <button 
+                onClick={() => setShowAlertModal(true)}
+                className="flex items-center gap-2 px-3 py-2 bg-white text-gray-900 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors"
+              >
+                <Bell className="w-4 h-4" />
+                Create Wallet Alert
+              </button>
+              <Link to="/tokens" className="flex items-center gap-2 px-3 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+                <Activity className="w-4 h-4" />
+                View Token Overlap
+              </Link>
+              <button className="flex items-center gap-2 px-3 py-2 bg-white/10 text-white rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+                <Eye className="w-4 h-4" />
+                Track Wallet
+              </button>
+            </div>
+          </div>
 
       {/* Top Wallets Quick View */}
       <div className="px-4 mb-6">
