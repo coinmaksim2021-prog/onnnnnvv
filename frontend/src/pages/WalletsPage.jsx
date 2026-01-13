@@ -313,8 +313,110 @@ export default function WalletsPage() {
             </div>
           </div>
 
+          {/* Token Alignment & Strategy Suitability — НОВЫЕ БЛОКИ */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+            {/* Token Alignment */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                <Activity className="w-4 h-4 text-gray-500" />
+                Token Alignment
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                      <Info className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                    <p>Shows overlap between wallet holdings and tokens with confirmed bullish/supportive structures from Tokens page.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </h3>
+              
+              <div className="space-y-2 mb-3">
+                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-gray-700" />
+                    <span className="text-sm font-medium text-gray-900">ETH</span>
+                    <span className="text-xs text-gray-500">Accumulation</span>
+                  </div>
+                  <span className="text-xs font-semibold text-gray-700">Aligned</span>
+                </div>
+                
+                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-gray-700" />
+                    <span className="text-sm font-medium text-gray-900">ARB</span>
+                    <span className="text-xs text-gray-500">Supportive</span>
+                  </div>
+                  <span className="text-xs font-semibold text-gray-700">Aligned</span>
+                </div>
+                
+                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-gray-700" />
+                    <span className="text-sm font-medium text-gray-900">OP</span>
+                    <span className="text-xs text-gray-500">Bullish</span>
+                  </div>
+                  <span className="text-xs font-semibold text-gray-700">Aligned</span>
+                </div>
+              </div>
+              
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600">
+                  <span className="font-semibold">Verdict:</span> This wallet is accumulating tokens with confirmed bullish structure (ETH, ARB, OP)
+                </div>
+              </div>
+            </div>
+
+            {/* Strategy Suitability */}
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2 mb-3">
+                <Zap className="w-4 h-4 text-gray-500" />
+                Strategy Suitability
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="ml-1 p-0.5 hover:bg-gray-100 rounded">
+                      <Info className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-900 text-white max-w-xs">
+                    <p>Shows which strategies from Tokens page align with this wallet's behavior and holdings.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </h3>
+              
+              <div className="space-y-2 mb-3">
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-gray-900">Smart Money Follow</span>
+                    <Check className="w-4 h-4 text-gray-700" />
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    <span className="font-semibold">Highly aligned</span> — Wallet shows consistent accumulation patterns
+                  </div>
+                </div>
+                
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-gray-900">Narrative Rider</span>
+                    <AlertTriangle className="w-4 h-4 text-gray-500" />
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    <span className="font-semibold">Partial alignment</span> — Some late entries detected
+                  </div>
+                </div>
+              </div>
+              
+              <div className="pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-600">
+                  <span className="font-semibold">Recommendation:</span> Best suited for Smart Money Follow strategy
+                </div>
+              </div>
+            </div>
+          </div>
+
       {/* Wallet Analytics Components */}
-      <div className="px-4 pb-8">
+      <div className="pb-8">
         {/* Row 1: Cost Basis PnL + Swaps PnL */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           <div>
