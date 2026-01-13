@@ -955,29 +955,8 @@ const EntityAlertModal = ({ onClose, entityName }) => {
     </div>
   );
 };
-            </div>
-          </div>
-        )}
-        
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div className="text-xs text-gray-500">
-            Entity alerts connect to your token watchlist
-          </div>
-          <button 
-            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
-              selectedAlert 
-                ? 'bg-gray-900 text-white hover:bg-gray-800' 
-                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-            }`}
-            disabled={!selectedAlert}
-          >
-            Create Alert
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+
+export default function EntityDetail() {
 
 export default function EntityDetail() {
   const { entityId } = useParams();
